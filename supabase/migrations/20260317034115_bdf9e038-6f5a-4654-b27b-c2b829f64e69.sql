@@ -1,0 +1,1 @@
+ALTER TABLE public.brands ADD COLUMN bg_color text NOT NULL DEFAULT 'white';
