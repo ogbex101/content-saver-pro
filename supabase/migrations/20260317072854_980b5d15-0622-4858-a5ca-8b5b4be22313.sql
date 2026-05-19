@@ -1,0 +1,1 @@
+ALTER TABLE public.profile ADD COLUMN about_intro text NOT NULL DEFAULT 'I''m an Email Marketing Specialist and Content Creator with over 4 years of experience.';
