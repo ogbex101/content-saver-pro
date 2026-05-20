@@ -57,24 +57,44 @@ const ProjectManagementSection = () => {
           {items.map((a, i) => (
             <motion.div
               key={a.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="group bg-card border border-border/60 rounded-2xl overflow-hidden hover:border-gold/50 hover:shadow-xl hover:shadow-gold/10 transition-all duration-500"
+              initial={{ opacity: 0, y: 40, scale: 0.96 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              whileHover={{ y: -6, scale: 1.02 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.55, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative bg-card border border-border/60 rounded-2xl overflow-hidden hover:border-gold/50 hover:shadow-2xl hover:shadow-gold/10 transition-[box-shadow,border-color] duration-500"
             >
+              <div className="absolute inset-0 bg-gradient-to-br from-gold/0 via-gold/0 to-gold/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
               {a.image_url && (
                 <div className="aspect-[16/10] overflow-hidden bg-muted">
-                  <img src={a.image_url} alt={a.title} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <motion.img
+                    src={a.image_url}
+                    alt={a.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover"
+                    whileHover={{ scale: 1.08 }}
+                    transition={{ duration: 0.7, ease: "easeOut" }}
+                  />
                 </div>
               )}
-              <div className="p-6">
-                {a.tool && <span className="text-[10px] font-bold uppercase tracking-wider text-gold">{a.tool}</span>}
+              <div className="p-6 relative">
+                {a.tool && (
+                  <motion.span
+                    initial={{ opacity: 0, x: -8 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 + 0.2 }}
+                    className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-gold"
+                  >
+                    <Zap size={10} /> {a.tool}
+                  </motion.span>
+                )}
                 <h3 className="font-bold text-lg mt-2 mb-2 group-hover:text-gold transition-colors">{a.title}</h3>
                 {a.description && <p className="text-sm text-muted-foreground font-medium leading-relaxed">{a.description}</p>}
                 {a.link_url && (
-                  <a href={a.link_url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-gold">
-                    See it in action <ArrowRight size={11} />
+                  <a href={a.link_url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-gold group/link">
+                    See it in action
+                    <ArrowRight size={11} className="transition-transform duration-300 group-hover/link:translate-x-1" />
                   </a>
                 )}
               </div>
