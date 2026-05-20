@@ -36,6 +36,7 @@ const AdminProfile = () => {
       hero_images: heroImages,
       hero_rotation_enabled: (profile as any).hero_rotation_enabled ?? false,
       slideshow_interval_seconds: (profile as any).slideshow_interval_seconds ?? 5,
+      slideshow_transition: (profile as any).slideshow_transition ?? "slide",
     } as any).eq("id", profile.id);
     if (!error) toast.success("Profile saved!");
     else toast.error(error.message);
