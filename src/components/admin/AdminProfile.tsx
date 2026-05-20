@@ -36,6 +36,7 @@ const AdminProfile = () => {
       hero_images: heroImages,
       hero_rotation_enabled: (profile as any).hero_rotation_enabled ?? false,
       slideshow_interval_seconds: (profile as any).slideshow_interval_seconds ?? 5,
+      slideshow_transition: (profile as any).slideshow_transition ?? "slide",
     } as any).eq("id", profile.id);
     if (!error) toast.success("Profile saved!");
     else toast.error(error.message);
@@ -146,13 +147,26 @@ const AdminProfile = () => {
 
         <div className="mt-6 p-4 rounded-xl bg-surface border border-border/50">
           <h3 className="text-sm font-bold mb-1">Featured Projects Slideshow</h3>
-          <p className="text-xs text-muted-foreground font-semibold mb-3">How many seconds each project stays visible before the slideshow advances.</p>
-          <div className="max-w-xs">
+          <p className="text-xs text-muted-foreground font-semibold mb-3">Control how often slides advance and the transition style between them.</p>
+          <div className="grid md:grid-cols-2 gap-4">
             {numField(
               "Interval (seconds)",
               (profile as any).slideshow_interval_seconds ?? 5,
               (v) => setProfile({ ...profile, slideshow_interval_seconds: Math.max(1, v) } as any)
             )}
+            <div>
+              <label className="text-xs font-bold text-muted-foreground mb-1.5 block">Transition Style</label>
+              <select
+                value={(profile as any).slideshow_transition ?? "slide"}
+                onChange={(e) => setProfile({ ...profile, slideshow_transition: e.target.value } as any)}
+                className="w-full px-4 py-2.5 rounded-xl border border-border/50 bg-card text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-gold/50"
+              >
+                <option value="slide">Slide</option>
+                <option value="fade">Fade</option>
+                <option value="zoom">Zoom</option>
+                <option value="flip">Flip (3D)</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>

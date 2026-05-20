@@ -45,9 +45,6 @@ const MyStorySection = () => {
               <div className="rounded-2xl overflow-hidden shadow-xl border border-border">
                 <img src={imgUrl} alt="Blessing" className="w-full aspect-[4/5] object-cover" loading="lazy" />
               </div>
-              <p className="mt-5 font-display text-base text-accent italic text-center">
-                "Words that feel like a friend, not a billboard."
-              </p>
             </motion.div>
           )}
 
