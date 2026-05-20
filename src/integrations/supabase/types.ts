@@ -132,7 +132,6 @@ export type Database = {
           profile_image_url: string | null
           projects_completed: number
           slideshow_interval_seconds: number
-          slideshow_transition: string
           title: string
           updated_at: string
         }
@@ -154,7 +153,6 @@ export type Database = {
           profile_image_url?: string | null
           projects_completed?: number
           slideshow_interval_seconds?: number
-          slideshow_transition?: string
           title?: string
           updated_at?: string
         }
@@ -176,7 +174,6 @@ export type Database = {
           profile_image_url?: string | null
           projects_completed?: number
           slideshow_interval_seconds?: number
-          slideshow_transition?: string
           title?: string
           updated_at?: string
         }

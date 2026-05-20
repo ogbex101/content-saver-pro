@@ -1,46 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, Pause, Play, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 
-type Transition = "slide" | "fade" | "zoom" | "flip";
-
-const variantsFor = (t: Transition) => {
-  switch (t) {
-    case "fade":
-      return {
-        initial: { opacity: 0 },
-        animate: { opacity: 1 },
-        exit: { opacity: 0 },
-      };
-    case "zoom":
-      return {
-        initial: { opacity: 0, scale: 1.05 },
-        animate: { opacity: 1, scale: 1 },
-        exit: { opacity: 0, scale: 0.97 },
-      };
-    case "flip":
-      return {
-        initial: { opacity: 0, rotateY: 25 },
-        animate: { opacity: 1, rotateY: 0 },
-        exit: { opacity: 0, rotateY: -25 },
-      };
-    case "slide":
-    default:
-      return {
-        initial: { opacity: 0, x: 60 },
-        animate: { opacity: 1, x: 0 },
-        exit: { opacity: 0, x: -60 },
-      };
-  }
-};
-
 const PortfolioSection = () => {
   const [projects, setProjects] = useState<any[]>([]);
-  const [intervalSec, setIntervalSec] = useState(5);
-  const [transition, setTransition] = useState<Transition>("slide");
+  const [interval, setIntervalSec] = useState(5);
   const [index, setIndex] = useState(0);
+  const [playing, setPlaying] = useState(true);
   const timerRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -51,27 +19,20 @@ const PortfolioSection = () => {
       .order("sort_order")
       .limit(8)
       .then(({ data }) => setProjects(data ?? []));
-    supabase
-      .from("profile")
-      .select("slideshow_interval_seconds, slideshow_transition")
-      .limit(1)
-      .single()
-      .then(({ data }) => {
-        if (data?.slideshow_interval_seconds) setIntervalSec(data.slideshow_interval_seconds);
-        if ((data as any)?.slideshow_transition) setTransition((data as any).slideshow_transition as Transition);
-      });
+    supabase.from("profile").select("slideshow_interval_seconds").limit(1).single().then(({ data }) => {
+      if (data?.slideshow_interval_seconds) setIntervalSec(data.slideshow_interval_seconds);
+    });
   }, []);
 
-  // Continuous, non-stopping auto-advance
   useEffect(() => {
-    if (projects.length <= 1) return;
+    if (!playing || projects.length <= 1) return;
     timerRef.current = window.setTimeout(() => {
       setIndex((i) => (i + 1) % projects.length);
-    }, Math.max(1, intervalSec) * 1000);
+    }, Math.max(1, interval) * 1000);
     return () => {
       if (timerRef.current) window.clearTimeout(timerRef.current);
     };
-  }, [index, intervalSec, projects.length]);
+  }, [index, playing, interval, projects.length]);
 
   const go = (delta: number) => {
     if (projects.length === 0) return;
@@ -79,7 +40,6 @@ const PortfolioSection = () => {
   };
 
   const current = projects[index];
-  const v = variantsFor(transition);
 
   return (
     <section id="portfolio" className="py-24 md:py-32 bg-background relative overflow-hidden">
@@ -101,75 +61,83 @@ const PortfolioSection = () => {
         </motion.div>
 
         {current && (
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <div className="relative rounded-3xl overflow-hidden bg-card border border-border shadow-xl">
-              {/* Stage — shows the full design at its natural aspect ratio */}
-              <div className="relative w-full bg-muted overflow-hidden" style={{ perspective: 1200 }}>
+              {/* Slideshow stage — fixed height, captures top of design */}
+              <div className="relative w-full h-[280px] sm:h-[380px] md:h-[460px] lg:h-[520px] bg-muted overflow-hidden">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={current.id}
-                    initial={v.initial}
-                    animate={v.animate}
-                    exit={v.exit}
-                    transition={{ duration: 0.7, ease: "easeOut" }}
-                    className="w-full"
+                    initial={{ opacity: 0, x: 60 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -60 }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    className="absolute inset-0"
                   >
                     {current.featured_image_url ? (
                       <img
                         src={current.featured_image_url}
                         alt={current.title}
-                        className="block w-full h-auto object-contain"
+                        /* object-top so we capture the hero/top of each design */
+                        className="w-full h-full object-cover object-top"
                       />
                     ) : (
-                      <div className="w-full aspect-[4/3] flex items-center justify-center text-muted-foreground">No image</div>
+                      <div className="w-full h-full flex items-center justify-center text-muted-foreground">No image</div>
                     )}
+                    {/* Caption overlay */}
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-foreground/95 via-foreground/70 to-transparent p-5 md:p-8">
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
+                        <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-accent text-accent-foreground uppercase tracking-[0.15em]">{current.industry}</span>
+                        <span className="text-[10px] text-background/80 font-semibold uppercase tracking-[0.15em]">{current.platform}</span>
+                      </div>
+                      <h3 className="font-display text-xl md:text-3xl font-medium text-background mb-1">{current.title}</h3>
+                      <p className="text-accent font-semibold text-sm md:text-base">{current.key_result}</p>
+                    </div>
                   </motion.div>
                 </AnimatePresence>
 
                 {/* Controls */}
                 <button
-                  onClick={() => go(-1)}
+                  onClick={() => { setPlaying(false); go(-1); }}
                   className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-background/90 backdrop-blur flex items-center justify-center text-foreground hover:bg-background shadow-lg transition-all"
                   aria-label="Previous"
                 >
                   <ChevronLeft size={18} />
                 </button>
                 <button
-                  onClick={() => go(1)}
+                  onClick={() => { setPlaying(false); go(1); }}
                   className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-background/90 backdrop-blur flex items-center justify-center text-foreground hover:bg-background shadow-lg transition-all"
                   aria-label="Next"
                 >
                   <ChevronRight size={18} />
                 </button>
+                <button
+                  onClick={() => setPlaying((p) => !p)}
+                  className="absolute top-3 right-3 w-10 h-10 rounded-full bg-background/90 backdrop-blur flex items-center justify-center text-foreground hover:bg-background shadow-lg transition-all"
+                  aria-label={playing ? "Pause" : "Play"}
+                >
+                  {playing ? <Pause size={16} /> : <Play size={16} />}
+                </button>
               </div>
 
-              {/* Caption + footer */}
-              <div className="p-5 md:p-6 bg-card border-t border-border">
-                <div className="flex flex-wrap items-center gap-2 mb-2">
-                  <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-accent text-accent-foreground uppercase tracking-[0.15em]">{current.industry}</span>
-                  <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-[0.15em]">{current.platform}</span>
+              {/* Footer with dots + view details */}
+              <div className="flex items-center justify-between gap-4 p-4 md:p-5 bg-card">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  {projects.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => { setPlaying(false); setIndex(i); }}
+                      className={`h-1.5 rounded-full transition-all ${i === index ? "w-8 bg-foreground" : "w-1.5 bg-foreground/20 hover:bg-foreground/40"}`}
+                      aria-label={`Go to ${i + 1}`}
+                    />
+                  ))}
                 </div>
-                <h3 className="font-display text-xl md:text-2xl font-medium text-foreground mb-1">{current.title}</h3>
-                <p className="text-accent font-semibold text-sm md:text-base mb-4">{current.key_result}</p>
-
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    {projects.map((_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setIndex(i)}
-                        className={`h-1.5 rounded-full transition-all ${i === index ? "w-8 bg-foreground" : "w-1.5 bg-foreground/20 hover:bg-foreground/40"}`}
-                        aria-label={`Go to ${i + 1}`}
-                      />
-                    ))}
-                  </div>
-                  <Link
-                    to={`/project/${current.id}`}
-                    className="inline-flex items-center gap-2 bg-foreground text-background px-5 py-2.5 rounded-full text-xs font-semibold tracking-wide hover:bg-foreground/90 transition-all whitespace-nowrap"
-                  >
-                    View details <ArrowRight size={13} />
-                  </Link>
-                </div>
+                <Link
+                  to={`/project/${current.id}`}
+                  className="inline-flex items-center gap-2 bg-foreground text-background px-5 py-2.5 rounded-full text-xs font-semibold tracking-wide hover:bg-foreground/90 transition-all whitespace-nowrap"
+                >
+                  View details <ArrowRight size={13} />
+                </Link>
               </div>
             </div>
 
