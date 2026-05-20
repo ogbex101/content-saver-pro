@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      automations: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          link_url: string | null
+          sort_order: number
+          title: string
+          tool: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          link_url?: string | null
+          sort_order?: number
+          title: string
+          tool?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          link_url?: string | null
+          sort_order?: number
+          title?: string
+          tool?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       brands: {
         Row: {
           bg_color: string
