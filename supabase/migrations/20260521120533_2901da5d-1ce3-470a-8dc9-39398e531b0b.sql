@@ -1,0 +1,1 @@
+ALTER TABLE public.automations ADD COLUMN IF NOT EXISTS category TEXT NOT NULL DEFAULT 'project_management';
