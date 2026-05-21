@@ -46,6 +46,7 @@ const AdminAutomations = () => {
       tool: item.tool ?? "",
       image_url: item.image_url ?? "",
       link_url: item.link_url ?? "",
+      category: item.category ?? "project_management",
     });
   };
 
@@ -65,6 +66,7 @@ const AdminAutomations = () => {
       tool: form.tool.trim() || null,
       image_url: form.image_url || null,
       link_url: form.link_url.trim() || null,
+      category: form.category || "project_management",
     };
 
     if (editing) {
