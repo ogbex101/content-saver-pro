@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       automations: {
         Row: {
+          category: string
           created_at: string
           description: string | null
           id: string
@@ -27,6 +28,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          category?: string
           created_at?: string
           description?: string | null
           id?: string
@@ -38,6 +40,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          category?: string
           created_at?: string
           description?: string | null
           id?: string
@@ -132,6 +135,7 @@ export type Database = {
           profile_image_url: string | null
           projects_completed: number
           slideshow_interval_seconds: number
+          slideshow_transition: string
           title: string
           updated_at: string
         }
@@ -153,6 +157,7 @@ export type Database = {
           profile_image_url?: string | null
           projects_completed?: number
           slideshow_interval_seconds?: number
+          slideshow_transition?: string
           title?: string
           updated_at?: string
         }
@@ -174,6 +179,7 @@ export type Database = {
           profile_image_url?: string | null
           projects_completed?: number
           slideshow_interval_seconds?: number
+          slideshow_transition?: string
           title?: string
           updated_at?: string
         }

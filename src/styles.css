@@ -206,3 +206,23 @@ html { scroll-behavior: smooth; }
 ::-webkit-scrollbar-track { background: hsl(var(--background)); }
 ::-webkit-scrollbar-thumb { background: hsl(var(--foreground) / 0.25); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: hsl(var(--gold)); }
+
+@keyframes marquee-rtl {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes marquee-ltr {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+.animate-marquee-rtl {
+  animation: marquee-rtl 40s linear infinite;
+  will-change: transform;
+}
+.animate-marquee-ltr {
+  animation: marquee-ltr 40s linear infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-rtl, .animate-marquee-ltr { animation: none; }
+}

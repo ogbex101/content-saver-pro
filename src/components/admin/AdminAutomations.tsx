@@ -12,9 +12,10 @@ interface Automation {
   image_url: string | null;
   link_url: string | null;
   sort_order: number;
+  category: string;
 }
 
-const empty = { title: "", description: "", tool: "", image_url: "", link_url: "" };
+const empty = { title: "", description: "", tool: "", image_url: "", link_url: "", category: "project_management" };
 
 const AdminAutomations = () => {
   const [items, setItems] = useState<Automation[]>([]);
@@ -45,6 +46,7 @@ const AdminAutomations = () => {
       tool: item.tool ?? "",
       image_url: item.image_url ?? "",
       link_url: item.link_url ?? "",
+      category: item.category ?? "project_management",
     });
   };
 
@@ -64,6 +66,7 @@ const AdminAutomations = () => {
       tool: form.tool.trim() || null,
       image_url: form.image_url || null,
       link_url: form.link_url.trim() || null,
+      category: form.category || "project_management",
     };
 
     if (editing) {
@@ -89,6 +92,14 @@ const AdminAutomations = () => {
 
   const FormFields = (
     <div className="space-y-3 p-4 rounded-lg border bg-surface">
+      <select
+        value={form.category}
+        onChange={(e) => setForm({ ...form, category: e.target.value })}
+        className="w-full px-3 py-2 rounded-lg border bg-card text-sm focus:outline-none focus:ring-2 focus:ring-gold/50"
+      >
+        <option value="project_management">Project Management</option>
+        <option value="n8n">n8n Automation</option>
+      </select>
       <input
         placeholder="Title (e.g. Client Onboarding Workflow)"
         value={form.title}
