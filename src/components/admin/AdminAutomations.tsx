@@ -12,9 +12,10 @@ interface Automation {
   image_url: string | null;
   link_url: string | null;
   sort_order: number;
+  category: string;
 }
 
-const empty = { title: "", description: "", tool: "", image_url: "", link_url: "" };
+const empty = { title: "", description: "", tool: "", image_url: "", link_url: "", category: "project_management" };
 
 const AdminAutomations = () => {
   const [items, setItems] = useState<Automation[]>([]);
