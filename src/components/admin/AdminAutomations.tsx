@@ -92,6 +92,14 @@ const AdminAutomations = () => {
 
   const FormFields = (
     <div className="space-y-3 p-4 rounded-lg border bg-surface">
+      <select
+        value={form.category}
+        onChange={(e) => setForm({ ...form, category: e.target.value })}
+        className="w-full px-3 py-2 rounded-lg border bg-card text-sm focus:outline-none focus:ring-2 focus:ring-gold/50"
+      >
+        <option value="project_management">Project Management</option>
+        <option value="n8n">n8n Automation</option>
+      </select>
       <input
         placeholder="Title (e.g. Client Onboarding Workflow)"
         value={form.title}
