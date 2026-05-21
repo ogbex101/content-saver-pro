@@ -1,55 +1,244 @@
+import { useEffect, useRef, useState, useCallback } from "react";
+import { X, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
--- Add slideshow timing column
-ALTER TABLE public.profile
-  ADD COLUMN IF NOT EXISTS slideshow_interval_seconds integer NOT NULL DEFAULT 5;
+export interface LightboxSlide {
+  image_url: string;
+  caption?: string | null;
+}
 
--- Update stats + humanize copy
-UPDATE public.profile SET
-  projects_completed = 190,
-  happy_clients = 100,
-  five_star_reviews = 100,
-  case_studies = 20,
-  about_intro = 'Hi, I''m Blessing — a writer at heart and an email marketer by craft.',
-  hero_intro = 'I help brands turn quiet inboxes into real conversations. For over four years I''ve been writing emails, planning campaigns, and quietly obsessing over the words that make people click, reply, and come back.',
-  about_text = 'I didn''t fall into email marketing by accident. I''ve always loved words — the way a good sentence can change how someone feels in a single breath. Email gave me a place where that feeling could also move numbers.
+export interface LightboxItem {
+  title: string;
+  description?: string | null;
+  caseStudy?: string | null; // maps to key_result or any extra detail
+  slides: LightboxSlide[];
+  tool?: string | null;
+  industry?: string | null;
+  platform?: string | null;
+  link_url?: string | null;
+}
 
-These days I split my time between writing email copy, building campaigns, and helping busy founders get their week back as a virtual assistant. I''m calm, organised, and slightly addicted to a tidy inbox.
+interface Props {
+  item: LightboxItem | null;
+  onClose: () => void;
+}
 
-If you''re looking for someone who actually reads your brand before writing for it, who answers her messages, and who treats your launch like it''s her own — that''s me.',
-  my_story = 'I''m Blessing. I grew up in Lagos, the kid who always wrote the birthday cards, the goodbye notes, the long messages no one asked for. Words just felt like home.
+const AUTOPLAY_MS = 3500;
 
-When I found email marketing, it clicked. It wasn''t about being loud — it was about being thoughtful. Picking the right word. Showing up in someone''s inbox like a friend, not a billboard.
+const ImageLightbox = ({ item, onClose }: Props) => {
+  const [index, setIndex] = useState(0);
+  const [playing, setPlaying] = useState(true);
+  const [direction, setDirection] = useState(1); // 1 = forward, -1 = backward
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-Four years in, I''ve worked with founders, coaches, agencies and small teams across more than ten industries. Some weeks I''m writing welcome sequences. Other weeks I''m cleaning up a messy ESP, building automations, or jumping in as a VA so someone can finally take a weekend off.
+  const slides = item?.slides ?? [];
+  const total = slides.length;
 
-What I love most isn''t the open rates — it''s the moment a client says, ''people are actually replying.'' That''s the part that never gets old.';
+  const go = useCallback(
+    (next: number, dir: number) => {
+      setDirection(dir);
+      setIndex(((next % total) + total) % total);
+    },
+    [total]
+  );
 
--- Replace services
-DELETE FROM public.services;
-INSERT INTO public.services (title, description, icon, sort_order) VALUES
-  ('Project Management', 'Plans, timelines and the calm follow-through that gets things shipped.', 'ClipboardList', 1),
-  ('Virtual Assistant', 'Inbox, calendar and admin handled, so you can focus on the real work.', 'Mail', 2),
-  ('Email Marketer', 'Campaigns, sequences and copy that actually get opened and replied to.', 'Mail', 3),
-  ('Figma Design Expert', 'Clean, on-brand layouts for emails, decks and landing pages.', 'Sparkles', 4),
-  ('Automation Expert', 'Workflows and tools wired up so the busywork runs itself.', 'Settings', 5),
-  ('Research & Problem Solver', 'Digs into the data, finds the gap, and writes the fix in plain English.', 'Lightbulb', 6);
+  const prev = useCallback(() => go(index - 1, -1), [go, index]);
+  const next = useCallback(() => go(index + 1, 1), [go, index]);
 
--- Replace skills
-DELETE FROM public.skills;
-INSERT INTO public.skills (title, description, icon, sort_order) VALUES
-  ('Project Management', 'Owning timelines end-to-end', 'ClipboardList', 1),
-  ('Virtual Assistant', 'Calm, organised support', 'Mail', 2),
-  ('Email Marketer', 'Copy that converts', 'Mail', 3),
-  ('Figma Design Expert', 'Polished on-brand layouts', 'Sparkles', 4),
-  ('Automation Expert', 'Workflows that run themselves', 'Settings', 5),
-  ('Research & Problem Solver', 'Spots gaps, ships fixes', 'Lightbulb', 6);
+  // Reset when item changes
+  useEffect(() => {
+    setIndex(0);
+    setPlaying(true);
+    setDirection(1);
+  }, [item]);
 
--- Seed mock testimonials (plain text, no links)
-DELETE FROM public.testimonials;
-INSERT INTO public.testimonials (quote, client_name, rating, date_text, sort_order) VALUES
-  ('Blessing rewrote our welcome sequence and our reply rate honestly tripled. She just gets tone.', 'Amara O., Founder', 5, 'Mar 2026', 1),
-  ('Calm, fast, and she actually reads your brand before writing a word. Rare combination.', 'Daniel K., Coach', 5, 'Feb 2026', 2),
-  ('I came for email copy and stayed for the project management. My week feels lighter.', 'Priya S., Agency Owner', 5, 'Jan 2026', 3),
-  ('Our Figma email templates look like a real brand now. Clients keep asking who made them.', 'Tunde A., Creative Lead', 5, 'Dec 2025', 4),
-  ('She set up automations that quietly do the work of a part-time hire. Worth every cent.', 'Ifeoma N., E-commerce', 5, 'Nov 2025', 5),
-  ('Best VA I''ve worked with. Replies are clear, deadlines are real, no chasing.', 'Marcus L., Consultant', 5, 'Oct 2025', 6);
+  // Autoplay
+  useEffect(() => {
+    if (!playing || total <= 1) return;
+    timerRef.current = setTimeout(() => go(index + 1, 1), AUTOPLAY_MS);
+    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
+  }, [playing, index, total, go]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    if (!item) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+      if (e.key === " ") { e.preventDefault(); setPlaying((p) => !p); }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [item, onClose, prev, next]);
+
+  if (!item) return null;
+
+  const currentSlide = slides[index];
+
+  const variants = {
+    enter: (d: number) => ({ x: d > 0 ? "100%" : "-100%", opacity: 0 }),
+    center: { x: 0, opacity: 1 },
+    exit: (d: number) => ({ x: d > 0 ? "-100%" : "100%", opacity: 0 }),
+  };
+
+  return (
+    <AnimatePresence>
+      {item && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
+          style={{ backgroundColor: "rgba(0,0,0,0.85)", backdropFilter: "blur(6px)" }}
+          onClick={onClose}
+        >
+          <motion.div
+            initial={{ scale: 0.92, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.92, opacity: 0 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="relative w-full max-w-5xl max-h-[90vh] bg-card rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close */}
+            <button
+              onClick={onClose}
+              className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-background/80 backdrop-blur flex items-center justify-center hover:bg-background transition-colors"
+              aria-label="Close"
+            >
+              <X size={16} />
+            </button>
+
+            {/* Image side */}
+            <div className="relative w-full md:w-[55%] flex-shrink-0 bg-muted overflow-hidden" style={{ minHeight: 260 }}>
+              <AnimatePresence custom={direction} mode="popLayout" initial={false}>
+                <motion.img
+                  key={`${index}`}
+                  custom={direction}
+                  variants={variants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.4, ease: "easeInOut" }}
+                  src={currentSlide?.image_url}
+                  alt={currentSlide?.caption ?? item.title}
+                  className="w-full h-full object-cover absolute inset-0"
+                  style={{ minHeight: 260 }}
+                />
+              </AnimatePresence>
+
+              {/* Slide controls — only when multiple slides */}
+              {total > 1 && (
+                <>
+                  {/* Prev / Next */}
+                  <button
+                    onClick={prev}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-background/70 backdrop-blur flex items-center justify-center hover:bg-background transition-colors z-10"
+                    aria-label="Previous"
+                  >
+                    <ChevronLeft size={18} />
+                  </button>
+                  <button
+                    onClick={next}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-background/70 backdrop-blur flex items-center justify-center hover:bg-background transition-colors z-10"
+                    aria-label="Next"
+                  >
+                    <ChevronRight size={18} />
+                  </button>
+
+                  {/* Play/pause + dot indicators */}
+                  <div className="absolute bottom-3 left-0 right-0 flex items-center justify-center gap-2 z-10">
+                    <button
+                      onClick={() => setPlaying((p) => !p)}
+                      className="w-7 h-7 rounded-full bg-background/70 backdrop-blur flex items-center justify-center hover:bg-background transition-colors"
+                      aria-label={playing ? "Pause slideshow" : "Play slideshow"}
+                    >
+                      {playing ? <Pause size={12} /> : <Play size={12} />}
+                    </button>
+                    {slides.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => { setDirection(i > index ? 1 : -1); setIndex(i); }}
+                        className={`rounded-full transition-all duration-300 ${i === index ? "w-5 h-2 bg-white" : "w-2 h-2 bg-white/50 hover:bg-white/80"}`}
+                        aria-label={`Slide ${i + 1}`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {/* Caption */}
+              {currentSlide?.caption && (
+                <div className="absolute top-3 left-3 right-12 z-10">
+                  <span className="text-[10px] bg-background/70 backdrop-blur px-2 py-1 rounded-full text-foreground font-medium">
+                    {currentSlide.caption}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Info side */}
+            <div className="flex flex-col p-6 md:p-8 overflow-y-auto flex-1 min-w-0">
+              {/* Tags */}
+              <div className="flex flex-wrap gap-2 mb-4">
+                {item.tool && (
+                  <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-accent/20 text-accent">
+                    {item.tool}
+                  </span>
+                )}
+                {item.industry && (
+                  <span className="text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-muted text-muted-foreground">
+                    {item.industry}
+                  </span>
+                )}
+                {item.platform && (
+                  <span className="text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full bg-muted text-muted-foreground">
+                    {item.platform}
+                  </span>
+                )}
+              </div>
+
+              <h2 className="font-display text-xl md:text-2xl font-bold mb-3 leading-snug">{item.title}</h2>
+
+              {item.caseStudy && (
+                <div className="mb-4 p-3 rounded-xl bg-accent/10 border border-accent/20">
+                  <p className="text-xs font-bold uppercase tracking-wider text-accent mb-1">Key Result</p>
+                  <p className="text-sm font-semibold text-foreground">{item.caseStudy}</p>
+                </div>
+              )}
+
+              {item.description && (
+                <div className="flex-1">
+                  <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">Case Study</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">{item.description}</p>
+                </div>
+              )}
+
+              {item.link_url && (
+                <a
+                  href={item.link_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-6 inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-accent text-accent-foreground text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-opacity"
+                >
+                  View Live →
+                </a>
+              )}
+
+              {/* Slide counter */}
+              {total > 1 && (
+                <p className="mt-4 text-[11px] text-muted-foreground font-medium">
+                  {index + 1} / {total}
+                </p>
+              )}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
+export default ImageLightbox;
