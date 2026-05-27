@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Golden Kobe Family — Email Marketing Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Lora:ital,wght@0,400;1,400;1,600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+    :root{
+      --blue:     #1565C0;
+      --blue-lt:  #2196F3;
+      --blue-sky: #42A5F5;
+      --yellow:   #F9A825;
+      --yellow-lt:#FFD54F;
+      --yellow-dk:#E65100;
+      --dark:     #060E1C;
+      --dark2:    #0A1628;
+      --dark3:    #0E1E36;
+      --mid:      #152540;
+      --text:     #EEF4FF;
+      --muted:    #7A9BC8;
+      --border:   rgba(33,150,243,.18);
+    }
+
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--dark);
+      color:var(--text);
+      font-family:'Nunito',sans-serif;
+      font-weight:400;
+      line-height:1.7;
+      overflow-x:hidden;
+    }
+
+    /* ── HERO ── */
+    .hero{
+      min-height:100vh;
+      display:grid;place-items:center;text-align:center;
+      padding:6rem 2rem 5rem;
+      position:relative;overflow:hidden;
+      background:
+        radial-gradient(ellipse 100% 70% at 50% 0%,rgba(249,168,37,.12) 0%,transparent 55%),
+        radial-gradient(ellipse 70% 50% at 20% 100%,rgba(21,101,192,.18) 0%,transparent 60%),
+        var(--dark);
+    }
+
+    /* Paw print watermark */
+    .hero::before{
+      content:'🐾';
+      position:absolute;font-size:28rem;opacity:.025;
+      top:50%;left:50%;transform:translate(-50%,-50%);
+      pointer-events:none;
+    }
+
+    .hero::after{
+      content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+      background:linear-gradient(90deg,transparent,var(--yellow),transparent);
+    }
+
+    .badge{
+      display:inline-flex;align-items:center;gap:.5rem;
+      font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+      color:var(--yellow);border:2px solid rgba(249,168,37,.3);
+      padding:.5rem 1.2rem;border-radius:2rem;margin-bottom:2rem;
+      animation:fadeUp .8s ease both;background:rgba(249,168,37,.06);
+    }
+    .badge-dot{width:7px;height:7px;border-radius:50%;background:var(--yellow);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+    .eyebrow{
+      font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;
+      color:var(--muted);margin-bottom:1.2rem;font-weight:600;
+      animation:fadeUp .9s .1s ease both;
+    }
+
+    h1{
+      font-family:'Nunito',sans-serif;font-weight:900;
+      font-size:clamp(3rem,9vw,8rem);
+      line-height:.95;letter-spacing:-.02em;
+      margin-bottom:1.5rem;
+      animation:fadeUp 1s .15s ease both;
+    }
+    .h1-gold{color:var(--yellow)}
+    .h1-blue{color:var(--blue-sky)}
+    .h1-white{color:var(--text)}
+
+    .hero-sub{
+      max-width:600px;margin:0 auto 3.5rem;
+      color:var(--muted);font-size:1rem;
+      animation:fadeUp 1s .25s ease both;
+    }
+
+    .meta-row{
+      display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;
+      animation:fadeUp 1s .35s ease both;
+    }
+    .meta-item{
+      background:rgba(21,101,192,.12);border:1px solid var(--border);
+      border-radius:12px;padding:.8rem 1.2rem;text-align:center;
+    }
+    .meta-label{font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem;font-weight:700}
+    .meta-val{font-size:.9rem;font-weight:700;color:var(--text)}
+
+    .scroll-hint{
+      position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+      display:flex;flex-direction:column;align-items:center;gap:.5rem;
+      animation:fadeUp 1s .6s ease both;
+    }
+    .scroll-hint span{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:700}
+    .scroll-line{width:1px;height:38px;background:linear-gradient(to bottom,var(--yellow),transparent);animation:scrollp 2s infinite}
+    @keyframes scrollp{0%,100%{opacity:.3}50%{opacity:1}}
+
+    /* ── BRAND LAUNCH BANNER ── */
+    .launch-banner{
+      background:linear-gradient(135deg,var(--yellow) 0%,#FF8F00 100%);
+      padding:1.4rem 2rem;text-align:center;
+    }
+    .launch-banner p{
+      color:#1A0800;font-size:.85rem;font-weight:800;
+      letter-spacing:.06em;text-transform:uppercase;margin:0;
+    }
+    .launch-banner span{opacity:.7;margin:0 .8rem}
+
+    /* ── KEY STATS ── */
+    .hero-stats{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+      background:var(--dark3);border-bottom:1px solid var(--border);
+    }
+    .hstat{
+      padding:2rem 1.5rem;text-align:center;
+      border-right:1px solid var(--border);
+      transition:background .3s;position:relative;overflow:hidden;
+    }
+    .hstat:last-child{border-right:none}
+    .hstat:hover{background:var(--mid)}
+    .hstat::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:3px;
+      background:linear-gradient(90deg,var(--yellow),var(--blue-lt));
+      transform:scaleX(0);transform-origin:left;transition:transform .4s;
+    }
+    .hstat:hover::before{transform:scaleX(1)}
+    .hstat-num{
+      font-family:'Nunito',sans-serif;font-weight:900;
+      font-size:clamp(1.8rem,4vw,2.8rem);
+      color:var(--yellow);line-height:1;margin-bottom:.4rem;
+    }
+    .hstat-label{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+    .hstat-note{font-size:.68rem;color:rgba(122,155,200,.55);margin-top:.25rem;font-style:italic}
+
+    /* ── SECTIONS ── */
+    section{max-width:940px;margin:0 auto;padding:5rem 2rem}
+
+    .section-label{
+      font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;
+      color:var(--yellow);margin-bottom:1.2rem;font-weight:800;
+      display:flex;align-items:center;gap:.8rem;
+    }
+    .section-label::after{content:'';height:2px;background:rgba(249,168,37,.25);width:50px;border-radius:2px}
+
+    h2{
+      font-family:'Nunito',sans-serif;font-weight:900;
+      font-size:clamp(2rem,4.5vw,3.4rem);line-height:1.1;margin-bottom:1.8rem;
+      letter-spacing:-.02em;
+    }
+    h2 .acc{color:var(--yellow)}
+    h2 .blu{color:var(--blue-sky)}
+
+    p{color:#8DADD4;margin-bottom:1.2rem;font-size:.96rem}
+    p:last-child{margin-bottom:0}
+
+    .divider{
+      width:100%;height:1px;
+      background:linear-gradient(90deg,transparent,var(--border),transparent);
+      max-width:940px;margin:0 auto;
+    }
+
+    /* ── PROBLEM CARDS ── */
+    .callout-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1.2rem;margin-top:2.5rem}
+    .callout-card{
+      background:var(--dark2);border:1px solid var(--border);border-radius:16px;
+      padding:1.7rem 1.5rem;position:relative;overflow:hidden;
+      transition:border-color .3s,transform .3s;
+    }
+    .callout-card:hover{border-color:var(--yellow);transform:translateY(-4px)}
+    .callout-card::before{
+      content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+      background:linear-gradient(90deg,var(--yellow),var(--blue-lt));
+      opacity:0;transition:opacity .3s;
+    }
+    .callout-card:hover::before{opacity:1}
+    .callout-icon{font-size:1.8rem;margin-bottom:.9rem}
+    .callout-title{font-size:.88rem;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem}
+    .callout-body{font-size:.83rem;color:var(--muted);margin:0;line-height:1.6}
+
+    /* ── SOLUTION STEPS ── */
+    .steps{margin-top:2.5rem;display:flex;flex-direction:column}
+    .step{
+      display:grid;grid-template-columns:56px 1fr;gap:1.8rem;
+      padding:2rem 0;border-bottom:1px solid var(--border);align-items:start;
+    }
+    .step:last-child{border-bottom:none}
+    .step-num{
+      width:44px;height:44px;border-radius:12px;
+      background:linear-gradient(135deg,var(--yellow),#FF8F00);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:900;font-size:1.2rem;color:#1A0800;flex-shrink:0;
+    }
+    .step-title{font-size:.95rem;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.5rem}
+    .step-body{font-size:.87rem;color:var(--muted);margin:0;line-height:1.65}
+
+    .pill-row{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.9rem}
+    .pill{
+      font-size:.67rem;letter-spacing:.05em;font-weight:700;
+      background:rgba(21,101,192,.15);border:1px solid var(--border);
+      color:var(--blue-sky);padding:.28rem .85rem;border-radius:2rem;
+    }
+    .pill.yellow{background:rgba(249,168,37,.1);border-color:rgba(249,168,37,.25);color:var(--yellow-lt)}
+
+    /* ── FLOWS GRID ── */
+    .flows-grid{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:1.2rem;margin-top:2rem;
+    }
+    .flow-card{
+      background:var(--dark2);border:1px solid var(--border);
+      border-radius:16px;overflow:hidden;
+      transition:border-color .3s,transform .3s;
+    }
+    .flow-card:hover{border-color:var(--yellow);transform:translateY(-3px)}
+    .flow-card-header{
+      padding:1.2rem 1.4rem;
+      border-bottom:1px solid var(--border);
+      display:flex;align-items:center;gap:.8rem;
+    }
+    .flow-icon{
+      width:36px;height:36px;border-radius:10px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:1.1rem;flex-shrink:0;
+    }
+    .fi-yellow{background:rgba(249,168,37,.15);border:1px solid rgba(249,168,37,.3)}
+    .fi-blue{background:rgba(21,101,192,.2);border:1px solid rgba(33,150,243,.3)}
+    .fi-green{background:rgba(27,94,32,.2);border:1px solid rgba(76,175,80,.3)}
+    .fi-purple{background:rgba(74,20,140,.2);border:1px solid rgba(149,117,205,.3)}
+    .fi-red{background:rgba(183,28,28,.2);border:1px solid rgba(239,83,80,.3)}
+
+    .flow-name{font-size:.88rem;font-weight:800;color:var(--text)}
+    .flow-trigger{font-size:.7rem;color:var(--muted);font-weight:600;margin-top:.15rem}
+
+    .flow-live{
+      margin-left:auto;
+      display:flex;align-items:center;gap:.35rem;
+      font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+      color:#4CAF50;
+    }
+    .flow-live-dot{width:6px;height:6px;border-radius:50%;background:#4CAF50;animation:pulse 2s infinite}
+
+    .flow-emails{padding:1.1rem 1.4rem;display:flex;flex-direction:column;gap:.55rem}
+    .flow-email{
+      display:flex;align-items:flex-start;gap:.7rem;
+      padding:.6rem .7rem;background:var(--dark3);border-radius:8px;
+      border:1px solid rgba(33,150,243,.08);
+    }
+    .fe-dot{
+      width:8px;height:8px;border-radius:50%;
+      background:var(--yellow);flex-shrink:0;margin-top:.35rem;
+    }
+    .fe-dot.blue{background:var(--blue-sky)}
+    .fe-dot.green{background:#66BB6A}
+    .fe-dot.sms{background:#CE93D8}
+    .fe-dot.split{background:var(--yellow-dk);border-radius:2px;transform:rotate(45deg)}
+    .fe-subject{font-size:.8rem;font-weight:600;color:var(--text);line-height:1.4}
+    .fe-subject small{display:block;font-size:.68rem;color:var(--muted);font-weight:400;margin-top:.1rem}
+
+    .flow-footer{
+      padding:.8rem 1.4rem;border-top:1px solid var(--border);
+      display:flex;gap:1rem;background:rgba(21,101,192,.05);
+    }
+    .ff-stat{font-size:.7rem;color:var(--muted);font-weight:700}
+    .ff-stat strong{color:var(--yellow-lt);margin-left:.2rem}
+
+    /* ── RESULTS ── */
+    .results-bg{
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%,rgba(249,168,37,.06) 0%,transparent 70%),
+        var(--dark2);
+      border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+    }
+    .stats-grid{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));
+      gap:1px;background:var(--border);border:1px solid var(--border);
+      border-radius:16px;overflow:hidden;margin-top:2.5rem;
+    }
+    .stat{background:var(--dark2);padding:1.8rem 1.2rem;text-align:center;transition:background .3s}
+    .stat:hover{background:var(--dark3)}
+    .stat-num{
+      font-family:'Nunito',sans-serif;font-weight:900;
+      font-size:clamp(1.8rem,3.5vw,2.6rem);
+      color:var(--yellow);line-height:1;margin-bottom:.4rem;
+    }
+    .stat-label{font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+    .stat-note{font-size:.66rem;color:rgba(122,155,200,.5);margin-top:.25rem;font-style:italic}
+
+    /* ── OUTCOME LIST ── */
+    .outcome-list{list-style:none;display:flex;flex-direction:column;gap:.7rem;margin:1.5rem 0}
+    .outcome-list li{
+      display:flex;align-items:flex-start;gap:.8rem;
+      font-size:.9rem;color:#8DADD4;
+    }
+    .outcome-list li::before{
+      content:'🐾';font-size:.7rem;margin-top:.15rem;flex-shrink:0;
+    }
+
+    /* ── QUOTE ── */
+    .quote-block{
+      border-left:3px solid var(--yellow);padding:1.1rem 0 1.1rem 2rem;
+      margin:2.5rem 0;
+      background:linear-gradient(90deg,rgba(249,168,37,.07),transparent);
+      border-radius:0 10px 10px 0;
+    }
+    .quote-text{
+      font-family:'Lora',serif;font-size:1.4rem;
+      font-style:italic;line-height:1.55;
+      color:var(--text);margin-bottom:.7rem;
+    }
+    .quote-attr{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-weight:700}
+
+    /* ── CTA ── */
+    .cta-section{
+      text-align:center;padding:6rem 2rem;
+      background:
+        radial-gradient(ellipse 70% 80% at 50% 100%,rgba(249,168,37,.1) 0%,transparent 70%),
+        var(--dark);
+    }
+    .cta-section h2{margin-bottom:1rem}
+    .cta-section p{color:var(--muted);margin-bottom:2.5rem}
+    .btn-primary{
+      display:inline-block;padding:.9rem 2.5rem;
+      background:linear-gradient(135deg,var(--yellow),#FF8F00);
+      color:#1A0800;font-size:.8rem;font-weight:800;
+      letter-spacing:.1em;text-transform:uppercase;
+      text-decoration:none;border-radius:12px;
+      transition:transform .2s,box-shadow .2s;
+    }
+    .btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(249,168,37,.4)}
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity .75s ease,transform .75s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+
+    @media(max-width:640px){
+      .step{grid-template-columns:48px 1fr;gap:1rem}
+      .stats-grid{grid-template-columns:1fr 1fr}
+      .hstat{border-right:none;border-bottom:1px solid var(--border)}
+      .flows-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ░░ HERO ░░ -->
+<div class="hero">
+  <div style="position:relative;z-index:1">
+    <div class="badge"><span class="badge-dot"></span>Case Study · Brand Launch · Email Marketing</div>
+    <p class="eyebrow">Klaviyo · Figma · Email + SMS · 5 Live Flows</p>
+    <h1>
+      <div class="h1-gold">GOLDEN</div>
+      <div class="h1-blue">KOBE</div>
+      <div class="h1-white">FAMILY<span style="color:var(--yellow)">.</span></div>
+    </h1>
+    <p class="hero-sub">A brand new pet brand needed everything built from scratch — so I designed all the emails, wrote every word of copy, and set up 5 fully automated Klaviyo flows that started working from day one.</p>
+    <div class="meta-row">
+      <div class="meta-item"><div class="meta-label">Brand</div><div class="meta-val">Golden Kobe Family</div></div>
+      <div class="meta-item"><div class="meta-label">Industry</div><div class="meta-val">Pet Products</div></div>
+      <div class="meta-item"><div class="meta-label">Platform</div><div class="meta-val">Klaviyo</div></div>
+      <div class="meta-item"><div class="meta-label">Channels</div><div class="meta-val">Email + SMS</div></div>
+      <div class="meta-item"><div class="meta-label">Starting Point</div><div class="meta-val">Zero — Brand New</div></div>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
+</div>
+
+<!-- ░░ LAUNCH BANNER ░░ -->
+<div class="launch-banner">
+  <p>🐾 New brand launch &nbsp;<span>·</span>&nbsp; 5 flows built &nbsp;<span>·</span>&nbsp; All Live &nbsp;<span>·</span>&nbsp; Email + SMS &nbsp;<span>·</span>&nbsp; 0 to fully automated in one project 🚀</p>
+</div>
+
+<!-- ░░ KEY NUMBERS ░░ -->
+<div class="hero-stats">
+  <div class="hstat reveal">
+    <div class="hstat-num">5</div>
+    <div class="hstat-label">Live Automation Flows</div>
+    <p class="hstat-note">All active in Klaviyo</p>
+  </div>
+  <div class="hstat reveal">
+    <div class="hstat-num">20+</div>
+    <div class="hstat-label">Emails Designed</div>
+    <p class="hstat-note">Custom Figma templates</p>
+  </div>
+  <div class="hstat reveal">
+    <div class="hstat-num">SMS</div>
+    <div class="hstat-label">+ Email Channels</div>
+    <p class="hstat-note">Abandoned cart uses both</p>
+  </div>
+  <div class="hstat reveal">
+    <div class="hstat-num">88</div>
+    <div class="hstat-label">Day Win-back Journey</div>
+    <p class="hstat-note">Full customer re-engagement</p>
+  </div>
+  <div class="hstat reveal">
+    <div class="hstat-num">100%</div>
+    <div class="hstat-label">Built from Scratch</div>
+    <p class="hstat-note">New brand, zero existing assets</p>
+  </div>
+</div>
+
+<!-- ░░ PROBLEM ░░ -->
+<section class="reveal">
+  <div class="section-label">01 — The Challenge</div>
+  <h2>A brand new business — <span class="acc">nothing existed yet</span></h2>
+  <p>Golden Kobe Family was a brand new pet business — named after their dogs Kobe and Moki — launching from absolute zero. No email templates. No automation flows. No copy. No strategy. Just a brand identity, a great product, and a growing audience that needed to be nurtured into loyal customers.</p>
+  <p>Without the right email infrastructure in place from launch day, they risked losing new subscribers immediately, abandoning carts without follow-up, and missing the chance to build a community around their brand before the competition got there first.</p>
+
+  <div class="callout-grid">
+    <div class="callout-card reveal">
+      <div class="callout-icon">🆕</div>
+      <div class="callout-title">Launching Cold</div>
+      <p class="callout-body">The brand was brand new with no email marketing infrastructure at all — not a single flow, template, or piece of copy was in place.</p>
+    </div>
+    <div class="callout-card reveal">
+      <div class="callout-icon">🎨</div>
+      <div class="callout-title">No Brand Templates</div>
+      <p class="callout-body">There were no on-brand email designs. Every subscriber would have received generic, unconverted communications — if anything at all.</p>
+    </div>
+    <div class="callout-card reveal">
+      <div class="callout-icon">⚙️</div>
+      <div class="callout-title">No Automation</div>
+      <p class="callout-body">No welcome series. No cart recovery. No post-purchase flow. No win-back. Every revenue-critical touchpoint in the customer journey was completely missing.</p>
+    </div>
+    <div class="callout-card reveal">
+      <div class="callout-icon">📣</div>
+      <div class="callout-title">No Community Strategy</div>
+      <p class="callout-body">As a community-driven pet brand, building emotional connection with subscribers from the first email was critical — but there was no plan or copy to do it.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ░░ SOLUTION ░░ -->
+<section class="reveal">
+  <div class="section-label">02 — The Solution</div>
+  <h2>Built the entire email system <span class="blu">from the ground up</span></h2>
+  <p>The project covered every part of GKF's email marketing — design, copy, strategy, and technical setup. By the time the brand launched, they had a full, professional email machine already running.</p>
+
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <div>
+        <div class="step-title">Custom Email Design in Figma</div>
+        <p class="step-body">All email templates were designed from scratch in Figma — built to match Golden Kobe Family's playful, community-first brand identity with their signature blue and yellow color palette, warm photography, and personality-driven layouts. The templates covered every flow category: welcome series, Bella emails, US and EU audience variants, survey list emails, abandoned cart, post-purchase, browse abandonment, win-back, and a special website launch email. All designs were created mobile-first and built for seamless import into Klaviyo.</p>
+        <div class="pill-row">
+          <span class="pill yellow">Brand-Matched Design</span>
+          <span class="pill yellow">Blue + Yellow Palette</span>
+          <span class="pill">Mobile-First</span>
+          <span class="pill">Multi-Audience Variants</span>
+          <span class="pill">20+ Email Templates</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step reveal">
+      <div class="step-num">02</div>
+      <div>
+        <div class="step-title">Email Copywriting — Every Email, Every Flow</div>
+        <p class="step-body">All copy for every email across all 5 flows was written from scratch — in a warm, playful, community-focused tone that feels like it's coming from real pet lovers (because it is). Subject lines were crafted to earn opens. Body copy was written to tell the GKF story, introduce Kobe and Moki, build emotional connection, handle objections naturally, and drive action at every stage — from first welcome to win-back re-engagement.</p>
+        <div class="pill-row">
+          <span class="pill yellow">Conversion Copywriting</span>
+          <span class="pill yellow">Brand Storytelling</span>
+          <span class="pill">Subject Line Optimisation</span>
+          <span class="pill">Community Voice</span>
+          <span class="pill">SMS Copy</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step reveal">
+      <div class="step-num">03</div>
+      <div>
+        <div class="step-title">5 Klaviyo Automation Flows — All Set to Live</div>
+        <p class="step-body">All templates were imported into Klaviyo and built out as five fully automated flows — each with strategic timing, smart conditional splits, and multi-channel logic. Every trigger, delay, and branching condition was carefully configured so the right email reaches the right subscriber at the right time, automatically. All five flows went Live and have been processing subscribers since day one of the brand launch.</p>
+        <div class="pill-row">
+          <span class="pill yellow">5 Live Flows</span>
+          <span class="pill">Strategic Timing</span>
+          <span class="pill">Conditional Splits</span>
+          <span class="pill">SMS + Email</span>
+          <span class="pill">Non-Opener Branches</span>
+          <span class="pill">WhatsApp Ready</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ░░ FLOWS ░░ -->
+<section class="reveal">
+  <div class="section-label">03 — The Flows</div>
+  <h2>5 automations covering <span class="acc">every stage</span> of the journey</h2>
+  <p>Each flow was built with a specific goal — from making a great first impression to recovering lost sales to bringing lapsed customers back. Together they cover the full customer lifecycle.</p>
+
+  <div class="flows-grid">
+
+    <!-- WELCOME -->
+    <div class="flow-card reveal">
+      <div class="flow-card-header">
+        <div class="flow-icon fi-yellow">🐾</div>
+        <div>
+          <div class="flow-name">Welcome Flow</div>
+          <div class="flow-trigger">Trigger: Added to GKF list</div>
+        </div>
+        <div class="flow-live"><span class="flow-live-dot"></span>Live</div>
+      </div>
+      <div class="flow-emails">
+        <div class="flow-email">
+          <div class="fe-dot"></div>
+          <div class="fe-subject">Warm Welcome & Introduction<small>Day 0 · "Welcome to the Golden Kobe Family! 🐾💙"</small></div>
+        </div>
+        <div class="flow-email">
+          <div class="fe-dot blue"></div>
+          <div class="fe-subject">Brand Values & Community Invitation<small>Day 2 · "You're part of something special 💙"</small></div>
+        </div>
+        <div class="flow-email">
+          <div class="fe-dot green"></div>
+          <div class="fe-subject">Best Content & Merchandise Highlight<small>Day 5 · "Meet Kobe and Moki + a little something..."</small></div>
+        </div>
+        <div class="flow-email">
+          <div class="fe-dot split"></div>
+          <div class="fe-subject">Conditional split — engagement check<small>Non-openers get a gentle reminder follow-up</small></div>
+        </div>
+        <div class="flow-email">
+          <div class="fe-dot"></div>
+          <div class="fe-subject">For Non-Openers: Gentle Reminder<small>"We miss you! A warm hello from Kobe & Moki"</small></div>
+        </div>
+      </div>
+      <div class="flow-footer">
+        <span class="ff-stat">Emails:<strong>4</strong></span>
+        <span class="ff-stat">Smart split:<strong>Yes</strong></span>
+        <span class="ff-stat">Duration:<strong>~5 days</strong></span>
+      </div>
+    </div>
+
+    <!-- ABANDONED CART -->
+    <div class="flow-card reveal">
+      <div class="flow-card-header">
+        <div class="flow-icon fi-red">🛒</div>
+        <div>
+          <div class="flow-name">Abandoned Cart Flow</div>
+          <div class="flow-trigger">Trigger: Checkout Started</div>
+        </div>
+        <div class="flow-live"><span class="flow-live-dot"></span>Live</div>
+      </div>
+      <div class="flow-emails">
+        <div class="flow-email">
+          <div class="fe-dot"></div>
+          <div class="fe-subject">Email 1: Gentle Reminder<small>1 hour · "Did life get busy? Your cart is still here..."</small></div>
+        </div>
+        <div class="flow-email">
+          <div class="fe-dot split"></div>
+          <div class="fe-subject">Conditional split — SMS eligibility<small>Splits into SMS path vs email-only path</small></div>
+        </div>
+        <div class="flow-email">
+          <div class="fe-dot sms"></div>
+          <div class="fe-subject">SMS #1 + Email 2: Friendly Nudge<small>Day 1 · "Your cart is still here, don't forget your 10%..."</small></div>
+        </div>
+        <div class="flow-email">
+          <div class="fe-dot sms"></div>
+          <div class="fe-subject">SMS #2 · Warm follow-up<small>"Still thinking it over? Your cart is safe. Plus..."</small></div>
+        </div>
+        <div class="flow-email">
+          <div class="fe-dot"></div>
+          <div class="fe-subject">Email 3: Last Call<small>Day 3 · "Last chance to grab your cart and 10% off"</small></div>
+        </div>
+      </div>
+      <div class="flow-footer">
+        <span class="ff-stat">Emails:<strong>3</strong></span>
+        <span class="ff-stat">SMS:<strong>2</strong></span>
+        <span class="ff-stat">Duration:<strong>~3 days</strong></span>
+      </div>
+    </div>
+
+    <!-- BROWSE ABANDONMENT -->
+    <div class="flow-card reveal">
+      <div class="flow-card-header">
+        <div class="flow-icon fi-blue">👀</div>
+        <div>
+          <div class="flow-name">Browse Abandonment Flow</div>
+          <div class="flow-trigger">Trigger: Viewed Product</div>
+        </div>
+        <div class="flow-live"><span class="flow-live-dot"></span>Live</div>
+      </div>
+      <div class="flow-emails">
+        <div class="flow-email">
+          <div class="fe-dot"></div>
+          <div class="fe-subject">Email 1: Gentle Reminder<small>2 hours · "Did something catch your eye?"</small></div>
+        </div>
+        <div class="flow-email">
+          <div class="fe-dot blue"></div>
+          <div class="fe-subject">Email 2: Warm Nudge<small>10 hours · "Still thinking about those Golden Kobe go..."</small></div>
+        </div>
+      </div>
+      <div class="flow-footer">
+        <span class="ff-stat">Emails:<strong>2</strong></span>
+        <span class="ff-stat">Window:<strong>12 hours</strong></span>
+        <span class="ff-stat">Timing:<strong>Precise</strong></span>
+      </div>
+    </div>
+
+    <!-- SHIPPING CONFIRMATION -->
+    <div class="flow-card reveal">
+      <div class="flow-card-header">
+        <div class="flow-icon fi-green">📦</div>
+        <div>
+          <div class="flow-name">Shipping Confirmation Flow</div>
+          <div class="flow-trigger">Trigger: Order Fulfilled</div>
+        </div>
+        <div class="flow-live"><span class="flow-live-dot"></span>Live</div>
+      </div>
+      <div class="flow-emails">
+        <div class="flow-email">
+          <div class="fe-dot green"></div>
+          <div class="fe-subject">Shipping Notification<small>Day 0 · "Track Your Order: It's On the Move!"</small></div>
+        </div>
+        <div class="flow-email">
+          <div class="fe-dot"></div>
+          <div class="fe-subject">Delivery Confirmation & Invitation to Share<small>Day 7 · "Your Golden Kobe Family order has arrived..."</small></div>
+        </div>
+        <div class="flow-email">
+          <div class="fe-dot blue"></div>
+          <div class="fe-subject">Follow-Up for Feedback or Review<small>Day 21 · "How did we do? We'd love your feedback..."</small></div>
+        </div>
+      </div>
+      <div class="flow-footer">
+        <span class="ff-stat">Emails:<strong>3</strong></span>
+        <span class="ff-stat">Review ask:<strong>Day 21</strong></span>
+        <span class="ff-stat">Duration:<strong>3 weeks</strong></span>
+      </div>
+    </div>
+
+    <!-- WIN-BACK -->
+    <div class="flow-card reveal">
+      <div class="flow-card-header">
+        <div class="flow-icon fi-purple">💛</div>
+        <div>
+          <div class="flow-name">Customer Win-Back Flow</div>
+          <div class="flow-trigger">Trigger: Order Placed</div>
+        </div>
+        <div class="flow-live"><span class="flow-live-dot"></span>Live</div>
+      </div>
+      <div class="flow-emails">
+        <div class="flow-email">
+          <div class="fe-dot"></div>
+          <div class="fe-subject">Email 1: We Miss You<small>Day 60 · "We've missed you at Golden Kobe Family..."</small></div>
+        </div>
+        <div class="flow-email">
+          <div class="fe-dot blue"></div>
+          <div class="fe-subject">Email 2: A Little Update from Us<small>Day 67 · "So much has happened since we last saw you..."</small></div>
+        </div>
+        <div class="flow-email">
+          <div class="fe-dot"></div>
+          <div class="fe-subject">Email 3: Special Treat Just for You<small>Day 74 · "Here's a little something to welcome you back..."</small></div>
+        </div>
+        <div class="flow-email">
+          <div class="fe-dot split"></div>
+          <div class="fe-subject">Last Call: We'd Love to See You<small>Day 81 · "Last chance for your welcome back treat"</small></div>
+        </div>
+        <div class="flow-email">
+          <div class="fe-dot sms"></div>
+          <div class="fe-subject">Non-Openers: Final Check-in<small>Day 88 · "Just checking in, we're still here for you 💙"</small></div>
+        </div>
+      </div>
+      <div class="flow-footer">
+        <span class="ff-stat">Emails:<strong>5</strong></span>
+        <span class="ff-stat">Duration:<strong>88 days</strong></span>
+        <span class="ff-stat">Non-opener:<strong>branch</strong></span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ░░ RESULTS ░░ -->
+<div class="results-bg">
+  <section class="reveal">
+    <div class="section-label">04 — The Results</div>
+    <h2>From zero to a <span class="acc">full email system</span> — launch ready</h2>
+    <p>Golden Kobe Family launched with a complete, professional, automated email marketing system already in place. Every new subscriber gets a warm, on-brand welcome. Every abandoned cart is chased — across both email and SMS. Every customer is followed up after purchase and invited to leave a review. And any lapsed customer gets a personalised 88-day win-back journey that runs completely on its own.</p>
+
+    <div class="stats-grid">
+      <div class="stat reveal">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Live Flows</div>
+        <p class="stat-note">All running from day one</p>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-num">20+</div>
+        <div class="stat-label">Emails Built</div>
+        <p class="stat-note">Custom Figma designs</p>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Channels Active</div>
+        <p class="stat-note">Email + SMS in cart flow</p>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-num">88</div>
+        <div class="stat-label">Day Win-back</div>
+        <p class="stat-note">Longest automated journey</p>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-num">6+</div>
+        <div class="stat-label">Smart Splits</div>
+        <p class="stat-note">Conditional logic in flows</p>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-num">0→✓</div>
+        <div class="stat-label">Starting Point</div>
+        <p class="stat-note">Built from absolute scratch</p>
+      </div>
+    </div>
+
+    <ul class="outcome-list reveal" style="margin-top:2rem">
+      <li>New subscribers get a 4-email welcome sequence that introduces the brand, tells the story of Kobe and Moki, and drives a first purchase — all automatically.</li>
+      <li>Abandoned carts are followed up with a 3-email + 2-SMS sequence, with a 10% off incentive, triggered within 1 hour of abandonment.</li>
+      <li>Every customer gets a shipping notification, delivery confirmation, and review request — on the right days, without anyone having to manually send anything.</li>
+      <li>Lapsed customers enter an 88-day win-back journey with an escalating series of warm, personalised emails — with a final non-opener branch for maximum coverage.</li>
+      <li>Browse abandonment is captured too — anyone who views a product and doesn't buy gets two timely, gentle reminder emails within 12 hours.</li>
+    </ul>
+
+    <div class="quote-block reveal" style="margin-top:2.5rem">
+      <p class="quote-text">"We launched with a full email system already running — welcomes, cart recovery, post-purchase, and win-back. Every part of the customer journey was covered from day one."</p>
+      <div class="quote-attr">— Golden Kobe Family</div>
+    </div>
+  </section>
+</div>
+
+<!-- ░░ CTA ░░ -->
+<div class="cta-section reveal">
+  <h2>Ready to launch your brand <span class="acc">the right way?</span></h2>
+  <p>I build the whole system — design, copy, automation, and strategy — so you can focus on your business while email works on autopilot.</p>
+  <a href="mailto:hello@youremail.com" class="btn-primary">🐾 Work With Me</a>
+</div>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
