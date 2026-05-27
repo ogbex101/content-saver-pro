@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OTMCLO — Email Marketing Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+    :root{
+      --green:    #39FF14;
+      --green-dk: #28B30F;
+      --green-dim:#1A6608;
+      --white:    #F0F0F0;
+      --grey:     #A0A0A0;
+      --grey-dk:  #3A3A3A;
+      --dark:     #080808;
+      --dark2:    #0F0F0F;
+      --dark3:    #161616;
+      --mid:      #1F1F1F;
+      --border:   rgba(57,255,20,.15);
+    }
+
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--dark);
+      color:var(--white);
+      font-family:'Space Grotesk',sans-serif;
+      font-weight:300;
+      line-height:1.7;
+      overflow-x:hidden;
+    }
+
+    /* scan line texture */
+    body::before{
+      content:'';position:fixed;inset:0;
+      background:repeating-linear-gradient(
+        0deg,transparent,transparent 2px,
+        rgba(57,255,20,.012) 2px,rgba(57,255,20,.012) 4px
+      );
+      pointer-events:none;z-index:998;
+    }
+
+    /* ── HERO ── */
+    .hero{
+      min-height:100vh;
+      display:flex;flex-direction:column;
+      justify-content:center;align-items:flex-start;
+      padding:6rem 4rem 5rem;
+      position:relative;overflow:hidden;
+      background:var(--dark);
+    }
+
+    .hero-grid-bg{
+      position:absolute;inset:0;
+      background-image:
+        linear-gradient(rgba(57,255,20,.04) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(57,255,20,.04) 1px,transparent 1px);
+      background-size:60px 60px;
+    }
+
+    .hero-corner{
+      position:absolute;bottom:0;right:0;
+      width:42vw;height:42vw;max-width:500px;max-height:500px;
+      border-top:1px solid var(--border);
+      border-left:1px solid var(--border);
+      opacity:.4;
+    }
+
+    .hero::after{
+      content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+      background:var(--green);opacity:.6;
+    }
+
+    .badge{
+      display:inline-flex;align-items:center;gap:.5rem;
+      font-family:'Space Mono',monospace;
+      font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
+      color:var(--green);border:1px solid var(--border);
+      padding:.45rem 1rem;margin-bottom:3rem;
+      animation:fadeUp .8s ease both;
+      position:relative;z-index:1;
+      background:rgba(57,255,20,.04);
+    }
+    .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.2}}
+
+    .hero-label{
+      font-family:'Space Mono',monospace;
+      font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;
+      color:var(--grey);margin-bottom:.8rem;
+      position:relative;z-index:1;
+      animation:fadeUp .9s .1s ease both;
+    }
+
+    h1{
+      font-family:'Space Grotesk',sans-serif;
+      font-size:clamp(4.5rem,12vw,11rem);
+      font-weight:700;line-height:.9;letter-spacing:-.03em;
+      position:relative;z-index:1;
+      animation:fadeUp 1s .15s ease both;
+      margin-bottom:2rem;
+    }
+    .h1-stroke{
+      -webkit-text-stroke:1.5px var(--green);
+      color:transparent;display:block;
+    }
+    .h1-fill{color:var(--white);display:block}
+    .h1-green{color:var(--green);display:block}
+
+    .hero-sub{
+      max-width:520px;color:var(--grey);font-size:.95rem;
+      position:relative;z-index:1;margin-bottom:3.5rem;
+      animation:fadeUp 1s .25s ease both;border-left:2px solid var(--green);
+      padding-left:1.2rem;
+    }
+
+    .meta-row{
+      display:flex;gap:2.5rem;flex-wrap:wrap;
+      position:relative;z-index:1;
+      animation:fadeUp 1s .35s ease both;
+    }
+    .meta-item{border-bottom:1px solid var(--border);padding-bottom:.8rem;min-width:110px}
+    .meta-label{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);margin-bottom:.25rem}
+    .meta-val{font-size:.88rem;font-weight:600;color:var(--white)}
+
+    .scroll-hint{
+      position:absolute;bottom:2.5rem;right:4rem;z-index:1;
+      display:flex;align-items:center;gap:.6rem;
+      animation:fadeUp 1s .6s ease both;
+    }
+    .scroll-hint span{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--grey)}
+    .scroll-line{height:1px;width:38px;background:linear-gradient(to right,var(--green),transparent)}
+
+    /* ── SERVICES STRIP ── */
+    .services-strip{
+      background:var(--dark2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+      padding:1.5rem 4rem;display:flex;align-items:center;gap:3rem;flex-wrap:wrap;
+    }
+    .ss-label{font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--green);flex-shrink:0}
+    .ss-items{display:flex;gap:.6rem;flex-wrap:wrap}
+    .ss-item{
+      font-size:.72rem;font-weight:500;
+      border:1px solid var(--border);padding:.25rem .75rem;
+      color:var(--grey);letter-spacing:.04em;
+    }
+
+    /* ── HERO STATS ── */
+    .hero-stats{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+      background:var(--dark2);border-bottom:1px solid var(--border);
+    }
+    .hstat{
+      padding:2rem 1.5rem;text-align:left;
+      border-right:1px solid var(--border);
+      transition:background .3s;position:relative;
+    }
+    .hstat:last-child{border-right:none}
+    .hstat:hover{background:var(--dark3)}
+    .hstat::after{
+      content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+      background:var(--green);transform:scaleY(0);transition:transform .4s;transform-origin:bottom;
+    }
+    .hstat:hover::after{transform:scaleY(1)}
+    .hstat-num{
+      font-family:'Space Mono',monospace;font-weight:700;
+      font-size:clamp(1.8rem,4vw,2.6rem);
+      color:var(--green);line-height:1;margin-bottom:.4rem;
+    }
+    .hstat-label{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--grey)}
+    .hstat-note{font-size:.65rem;color:rgba(160,160,160,.5);margin-top:.2rem;font-family:'Space Mono',monospace}
+
+    /* ── SECTIONS ── */
+    section{max-width:1000px;margin:0 auto;padding:5rem 4rem;position:relative;z-index:1}
+
+    .section-label{
+      font-family:'Space Mono',monospace;
+      font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;
+      color:var(--green);margin-bottom:1.2rem;
+      display:flex;align-items:center;gap:.8rem;
+    }
+    .section-label::after{content:'';height:1px;background:var(--border);width:60px}
+
+    h2{
+      font-family:'Space Grotesk',sans-serif;font-weight:700;
+      font-size:clamp(2rem,4.5vw,3.5rem);line-height:1.05;
+      letter-spacing:-.02em;margin-bottom:1.8rem;
+    }
+    h2 .acc{color:var(--green)}
+    h2 .str{-webkit-text-stroke:1px var(--white);color:transparent}
+
+    p{color:var(--grey);margin-bottom:1.2rem;font-size:.95rem}
+    p:last-child{margin-bottom:0}
+
+    .divider{
+      width:100%;height:1px;
+      background:linear-gradient(90deg,transparent,var(--border),transparent);
+      max-width:1000px;margin:0 auto;
+    }
+
+    /* ── PROBLEM CARDS ── */
+    .callout-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:1px;margin-top:2.5rem;background:var(--border);border:1px solid var(--border)}
+    .callout-card{
+      background:var(--dark2);padding:1.8rem 1.6rem;
+      position:relative;overflow:hidden;
+      transition:background .3s;
+    }
+    .callout-card:hover{background:var(--dark3)}
+    .callout-card::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:1px;
+      background:var(--green);opacity:0;transition:opacity .3s;
+    }
+    .callout-card:hover::before{opacity:1}
+    .callout-icon{font-size:1.4rem;margin-bottom:.9rem;display:block}
+    .callout-title{font-size:.82rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem}
+    .callout-body{font-size:.82rem;color:var(--grey);margin:0;line-height:1.6}
+
+    /* ── SOLUTION STEPS ── */
+    .steps{margin-top:2.5rem}
+    .step{
+      display:grid;grid-template-columns:80px 1fr;gap:2rem;
+      padding:2rem 0;border-bottom:1px solid var(--border);align-items:start;
+    }
+    .step:last-child{border-bottom:none}
+    .step-num{
+      font-family:'Space Mono',monospace;font-size:2.5rem;font-weight:700;
+      color:var(--green);opacity:.25;line-height:1;letter-spacing:-.04em;
+    }
+    .step-title{font-size:.9rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem}
+    .step-body{font-size:.86rem;color:var(--grey);margin:0;line-height:1.65}
+
+    .pill-row{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.9rem}
+    .pill{
+      font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.05em;
+      border:1px solid var(--border);color:var(--green);
+      padding:.22rem .75rem;
+    }
+
+    /* ── FLOWS GRID ── */
+    .flows-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;margin-top:2rem;background:var(--border);border:1px solid var(--border)}
+    .flow-card{background:var(--dark2);transition:background .25s}
+    .flow-card:hover{background:var(--dark3)}
+    .flow-header{
+      padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);
+      display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;
+    }
+    .flow-tag{
+      font-family:'Space Mono',monospace;
+      font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;
+      color:var(--green);border:1px solid var(--border);
+      padding:.2rem .55rem;margin-bottom:.5rem;display:inline-block;
+    }
+    .flow-name{font-size:.9rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.04em}
+    .flow-trigger{font-size:.7rem;color:var(--grey);margin-top:.2rem}
+    .flow-live{
+      display:flex;align-items:center;gap:.3rem;flex-shrink:0;
+      font-family:'Space Mono',monospace;
+      font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:#39FF14;
+      border:1px solid rgba(57,255,20,.25);padding:.2rem .5rem;
+    }
+    .fld{width:5px;height:5px;border-radius:50%;background:#39FF14;animation:pulse 1.5s infinite}
+
+    .flow-emails{padding:1rem 1.5rem;display:flex;flex-direction:column;gap:.45rem}
+    .fe{
+      display:flex;align-items:flex-start;gap:.8rem;
+      padding:.6rem .7rem;
+      border-left:1px solid var(--border);
+      transition:border-color .2s;
+    }
+    .fe:hover{border-left-color:var(--green)}
+    .fe-day{
+      font-family:'Space Mono',monospace;font-size:.6rem;
+      color:var(--green);min-width:32px;opacity:.7;margin-top:.1rem;flex-shrink:0;
+    }
+    .fe-title{font-size:.8rem;font-weight:600;color:var(--white);line-height:1.3}
+    .fe-sub{font-size:.7rem;color:var(--grey);margin-top:.1rem;font-style:italic}
+    .fe-sms{
+      font-family:'Space Mono',monospace;font-size:.55rem;
+      color:var(--green);border:1px solid var(--border);
+      padding:.1rem .35rem;margin-left:.3rem;vertical-align:middle;letter-spacing:.08em;
+    }
+
+    .flow-footer{
+      padding:.8rem 1.5rem;border-top:1px solid var(--border);
+      display:flex;gap:1.5rem;
+    }
+    .ff{font-family:'Space Mono',monospace;font-size:.62rem;color:var(--grey)}
+    .ff strong{color:var(--green)}
+
+    /* ── QUOTE ── */
+    .quote-block{
+      position:relative;margin:2.5rem 0;
+      padding:2rem 2rem 2rem 3rem;
+      border:1px solid var(--border);
+      background:var(--dark2);
+    }
+    .quote-block::before{
+      content:'"';position:absolute;top:-.5rem;left:1.5rem;
+      font-family:'Space Mono',monospace;font-size:4rem;
+      color:var(--green);opacity:.3;line-height:1;
+    }
+    .quote-text{
+      font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:500;
+      line-height:1.55;color:var(--white);margin-bottom:.7rem;font-style:italic;
+    }
+    .quote-attr{font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--grey)}
+
+    /* ── RESULTS ── */
+    .results-bg{
+      background:var(--dark2);
+      border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+      position:relative;z-index:1;
+    }
+    .stats-grid{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));
+      gap:1px;background:var(--border);border:1px solid var(--border);margin-top:2.5rem;
+    }
+    .stat{background:var(--dark2);padding:2rem 1.5rem;transition:background .3s;position:relative}
+    .stat:hover{background:var(--dark3)}
+    .stat::before{
+      content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+      background:var(--green);transform:scaleX(0);transition:transform .4s;transform-origin:left;
+    }
+    .stat:hover::before{transform:scaleX(1)}
+    .stat-num{
+      font-family:'Space Mono',monospace;font-weight:700;
+      font-size:clamp(1.8rem,3vw,2.6rem);
+      color:var(--green);line-height:1;margin-bottom:.4rem;
+    }
+    .stat-label{font-size:.63rem;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
+    .stat-note{font-size:.65rem;color:rgba(160,160,160,.45);margin-top:.25rem;font-family:'Space Mono',monospace}
+
+    /* ── OUTCOME LIST ── */
+    .outcome-list{list-style:none;display:flex;flex-direction:column;gap:.7rem;margin:1.5rem 0}
+    .outcome-list li{
+      display:flex;align-items:flex-start;gap:.9rem;
+      font-size:.9rem;color:var(--grey);
+      padding:.6rem 0;border-bottom:1px solid rgba(57,255,20,.06);
+    }
+    .outcome-list li:last-child{border-bottom:none}
+    .outcome-list li::before{
+      content:'→';font-family:'Space Mono',monospace;
+      color:var(--green);font-size:.85rem;margin-top:.08rem;flex-shrink:0;
+    }
+
+    /* ── CTA ── */
+    .cta-section{
+      text-align:center;padding:6rem 4rem;position:relative;z-index:1;
+      background:var(--dark);overflow:hidden;
+    }
+    .cta-section::before{
+      content:'';position:absolute;inset:0;
+      background-image:
+        linear-gradient(rgba(57,255,20,.04) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(57,255,20,.04) 1px,transparent 1px);
+      background-size:60px 60px;
+    }
+    .cta-section h2{position:relative;margin-bottom:1rem}
+    .cta-section p{color:var(--grey);margin-bottom:2.5rem;position:relative}
+    .btn-primary{
+      display:inline-block;padding:.9rem 2.5rem;
+      background:var(--green);color:var(--dark);
+      font-family:'Space Mono',monospace;
+      font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+      text-decoration:none;
+      transition:background .2s,transform .2s,box-shadow .2s;
+      position:relative;
+    }
+    .btn-primary:hover{background:#6aff47;transform:translateY(-3px);box-shadow:0 12px 35px rgba(57,255,20,.35)}
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity .75s ease,transform .75s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+
+    @media(max-width:768px){
+      .hero{padding:5rem 1.5rem 4rem}
+      section{padding:4rem 1.5rem}
+      .services-strip{padding:1.5rem}
+      .step{grid-template-columns:50px 1fr;gap:1rem}
+      .step-num{font-size:1.8rem}
+      .stats-grid{grid-template-columns:1fr 1fr}
+      .hstat{border-right:none;border-bottom:1px solid var(--border)}
+      .flows-grid{grid-template-columns:1fr}
+      .scroll-hint{display:none}
+      .cta-section{padding:5rem 1.5rem}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ░░ HERO ░░ -->
+<div class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-corner"></div>
+
+  <div class="badge"><span class="badge-dot"></span>Case Study</div>
+  <p class="hero-label">Klaviyo · Figma · Strategy · Copywriting · Streetwear</p>
+  <h1>
+    <span class="h1-stroke">OTM</span>
+    <span class="h1-fill">CLO</span>
+    <span class="h1-green">.</span>
+  </h1>
+  <p class="hero-sub">Full email marketing system for a streetwear brand — strategy, copy, design, and 4 live Klaviyo automations built from the ground up.</p>
+  <div class="meta-row">
+    <div class="meta-item"><div class="meta-label">Brand</div><div class="meta-val">OTMCLO</div></div>
+    <div class="meta-item"><div class="meta-label">Industry</div><div class="meta-val">Streetwear / Fashion</div></div>
+    <div class="meta-item"><div class="meta-label">Platform</div><div class="meta-val">Klaviyo</div></div>
+    <div class="meta-item"><div class="meta-label">Channels</div><div class="meta-val">Email + SMS</div></div>
+    <div class="meta-item"><div class="meta-label">Flows Live</div><div class="meta-val">4 Flows</div></div>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
+</div>
+
+<!-- ░░ SERVICES ░░ -->
+<div class="services-strip">
+  <span class="ss-label">Services</span>
+  <div class="ss-items">
+    <span class="ss-item">Email Strategy</span>
+    <span class="ss-item">Copywriting</span>
+    <span class="ss-item">Figma Design</span>
+    <span class="ss-item">Klaviyo Import</span>
+    <span class="ss-item">Flow Setup</span>
+    <span class="ss-item">SMS Copy</span>
+  </div>
+</div>
+
+<!-- ░░ KEY NUMBERS ░░ -->
+<div class="hero-stats">
+  <div class="hstat reveal">
+    <div class="hstat-num">4</div>
+    <div class="hstat-label">Live Flows</div>
+    <p class="hstat-note">All running in Klaviyo</p>
+  </div>
+  <div class="hstat reveal">
+    <div class="hstat-num">13+</div>
+    <div class="hstat-label">Emails Written</div>
+    <p class="hstat-note">+ SMS copy</p>
+  </div>
+  <div class="hstat reveal">
+    <div class="hstat-num">27</div>
+    <div class="hstat-label">Day Post-Purchase Journey</div>
+    <p class="hstat-note">Longest automation</p>
+  </div>
+  <div class="hstat reveal">
+    <div class="hstat-num">30m</div>
+    <div class="hstat-label">Cart Trigger Speed</div>
+    <p class="hstat-note">Fastest response window</p>
+  </div>
+  <div class="hstat reveal">
+    <div class="hstat-num">SMS</div>
+    <div class="hstat-label">+ Email Channels</div>
+    <p class="hstat-note">Abandoned cart uses both</p>
+  </div>
+</div>
+
+<!-- ░░ PROBLEM ░░ -->
+<section class="reveal">
+  <div class="section-label">01 — The Problem</div>
+  <h2>A streetwear brand with no email <span class="acc">infrastructure</span></h2>
+  <p>OTMCLO is a streetwear brand with a strong visual identity and a growing customer base — but no email marketing system to support it. Subscribers were joining the list and hearing nothing. Shoppers were abandoning carts with no follow-up. Customers were buying once and disappearing, with no automated touchpoints to bring them back or cross-sell into other collections.</p>
+  <p>The brand needed a complete email setup that matched its voice — direct, confident, Gen-Z streetwear coded — and an automation system that worked in the background to drive revenue without needing daily manual input.</p>
+
+  <div class="callout-grid">
+    <div class="callout-card reveal">
+      <span class="callout-icon">📭</span>
+      <div class="callout-title">No Welcome Flow</div>
+      <p class="callout-body">New subscribers were added to the list and received nothing. No introduction, no incentive, no reason to make a first purchase.</p>
+    </div>
+    <div class="callout-card reveal">
+      <span class="callout-icon">🛒</span>
+      <div class="callout-title">No Cart Recovery</div>
+      <p class="callout-body">Abandoned checkouts weren't followed up on. Every dropped cart was revenue left behind with nothing being done to recover it.</p>
+    </div>
+    <div class="callout-card reveal">
+      <span class="callout-icon">📦</span>
+      <div class="callout-title">No Post-Purchase Journey</div>
+      <p class="callout-body">Customers bought and heard nothing — no order confirmation, no delivery update, no cross-sell to complete their fit or re-engage with the brand.</p>
+    </div>
+    <div class="callout-card reveal">
+      <span class="callout-icon">✍️</span>
+      <div class="callout-title">No Brand Voice in Email</div>
+      <p class="callout-body">The copy needed to sound like OTMCLO — not like a generic e-commerce template. Direct, casual, and culturally fluent for a streetwear audience.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ░░ SOLUTION ░░ -->
+<section class="reveal">
+  <div class="section-label">02 — The Solution</div>
+  <h2>Strategy → Copy → Design → <span class="acc">Live</span></h2>
+  <p>Every piece of OTMCLO's email marketing was handled end-to-end — starting with a strategic plan for which automations to build and why, through to live flows running in Klaviyo. The result is a system that captures, nurtures, recovers, and retains customers automatically.</p>
+
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num">01</div>
+      <div>
+        <div class="step-title">Email Marketing Strategy</div>
+        <p class="step-body">Before writing a single word or designing a single email, a strategy was developed — identifying the four highest-impact automation flows for a streetwear brand at this stage of growth, mapping the customer journey from subscriber to repeat buyer, and defining the copy direction. The goal was a system that felt natural and brand-authentic, not like a mass-market template.</p>
+        <div class="pill-row">
+          <span class="pill">Customer Journey Mapping</span>
+          <span class="pill">Flow Prioritisation</span>
+          <span class="pill">Conversion Strategy</span>
+          <span class="pill">Brand Voice Direction</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step reveal">
+      <div class="step-num">02</div>
+      <div>
+        <div class="step-title">Copywriting — Every Email + SMS</div>
+        <p class="step-body">All copy across all four flows was written from scratch — in OTMCLO's direct, no-fluff voice that resonates with a streetwear-native audience. Subject lines were written to stop the scroll. Body copy was kept tight and intentional. CTAs were written in the brand's own language — "your fit pulled up", "last chance twin", "one piece doesn't finish a look". SMS copy was written separately, optimised for brevity and immediate impact.</p>
+        <div class="pill-row">
+          <span class="pill">Brand Voice Copy</span>
+          <span class="pill">Subject Line Writing</span>
+          <span class="pill">SMS Copy</span>
+          <span class="pill">CTA Optimisation</span>
+          <span class="pill">Gen-Z Tone</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step reveal">
+      <div class="step-num">03</div>
+      <div>
+        <div class="step-title">Email Design in Figma</div>
+        <p class="step-body">All email templates were designed in Figma — built around OTMCLO's black, white, and neon green brand identity. Layouts were bold, editorial, and streetwear-forward — using strong product photography, high-contrast sections, and a visual hierarchy that draws attention to the right thing at the right moment. Templates were built to be reusable across campaigns and optimised for Klaviyo import.</p>
+        <div class="pill-row">
+          <span class="pill">Brand-Matched Design</span>
+          <span class="pill">Black / White / Neon Green</span>
+          <span class="pill">Mobile-First</span>
+          <span class="pill">Editorial Layout</span>
+          <span class="pill">Reusable Templates</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step reveal">
+      <div class="step-num">04</div>
+      <div>
+        <div class="step-title">Klaviyo Import + Flow Setup</div>
+        <p class="step-body">All designed templates were imported into Klaviyo and built out as four complete, live automation flows. Each flow was configured with precise timing, trigger logic, and conditional splits — including the SMS/email branching logic in the abandoned cart flow. All four flows were set to Live and are processing contacts automatically.</p>
+        <div class="pill-row">
+          <span class="pill">Klaviyo Build</span>
+          <span class="pill">4 Live Flows</span>
+          <span class="pill">Conditional Splits</span>
+          <span class="pill">SMS + Email Logic</span>
+          <span class="pill">Trigger Setup</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ░░ FLOWS ░░ -->
+<section class="reveal">
+  <div class="section-label">03 — The Flows</div>
+  <h2>4 automations. Every <span class="acc">touchpoint covered.</span></h2>
+  <p>Each flow targets a specific stage of the customer journey — from the moment someone subscribes to win-back after purchase. Together they form a complete, always-on revenue system.</p>
+
+  <div class="flows-grid">
+
+    <!-- WELCOME -->
+    <div class="flow-card reveal">
+      <div class="flow-header">
+        <div>
+          <div class="flow-tag">Welcome</div>
+          <div class="flow-name">Welcome Series</div>
+          <div class="flow-trigger">Trigger: Added to Newsletter</div>
+        </div>
+        <div class="flow-live"><span class="fld"></span>Live</div>
+      </div>
+      <div class="flow-emails">
+        <div class="fe">
+          <div class="fe-day">D0</div>
+          <div>
+            <div class="fe-title">Welcome Email #1: Never Purchased</div>
+            <div class="fe-sub">"Welcome! Here's 10% off 🌿"</div>
+          </div>
+        </div>
+        <div class="fe">
+          <div class="fe-day">D3</div>
+          <div>
+            <div class="fe-title">Welcome Email #2</div>
+            <div class="fe-sub">"Why are you missing out?"</div>
+          </div>
+        </div>
+        <div class="fe">
+          <div class="fe-day">D6</div>
+          <div>
+            <div class="fe-title">Welcome Email #3</div>
+            <div class="fe-sub">"Never Been A Copy And Paste"</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-footer">
+        <span class="ff">Emails: <strong>3</strong></span>
+        <span class="ff">Duration: <strong>6 days</strong></span>
+        <span class="ff">Incentive: <strong>10% off</strong></span>
+      </div>
+    </div>
+
+    <!-- ABANDONED CART -->
+    <div class="flow-card reveal">
+      <div class="flow-header">
+        <div>
+          <div class="flow-tag">Abandoned Cart</div>
+          <div class="flow-name">Abandoned Checkout Reminder</div>
+          <div class="flow-trigger">Trigger: Checkout Started · 30 min delay</div>
+        </div>
+        <div class="flow-live"><span class="fld"></span>Live</div>
+      </div>
+      <div class="flow-emails">
+        <div class="fe">
+          <div class="fe-day">D0</div>
+          <div>
+            <div class="fe-title">SMS #1 <span class="fe-sms">SMS</span></div>
+            <div class="fe-sub">"Hey [Name], your checkout is waiting..." — SMS path</div>
+          </div>
+        </div>
+        <div class="fe">
+          <div class="fe-day">D0</div>
+          <div>
+            <div class="fe-title">Abandoned Cart Email 1</div>
+            <div class="fe-sub">"your checkout is expiring" — email-only path</div>
+          </div>
+        </div>
+        <div class="fe">
+          <div class="fe-day">D0</div>
+          <div>
+            <div class="fe-title">Abandoned Cart Email 2</div>
+            <div class="fe-sub">"okay here 👀" — 23hr later</div>
+          </div>
+        </div>
+        <div class="fe">
+          <div class="fe-day">D1</div>
+          <div>
+            <div class="fe-title">Abandoned Cart Email 3</div>
+            <div class="fe-sub">"Last chance twin" — final push</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-footer">
+        <span class="ff">Emails: <strong>3</strong></span>
+        <span class="ff">SMS: <strong>1</strong></span>
+        <span class="ff">Split: <strong>SMS/Email</strong></span>
+      </div>
+    </div>
+
+    <!-- POST PURCHASE -->
+    <div class="flow-card reveal">
+      <div class="flow-header">
+        <div>
+          <div class="flow-tag">Post-Purchase</div>
+          <div class="flow-name">Post-Purchase Followup</div>
+          <div class="flow-trigger">Trigger: Order Placed · 2 min delay</div>
+        </div>
+        <div class="flow-live"><span class="fld"></span>Live</div>
+      </div>
+      <div class="flow-emails">
+        <div class="fe">
+          <div class="fe-day">D0</div>
+          <div>
+            <div class="fe-title">Order Confirmation</div>
+            <div class="fe-sub">"Order confirmed... 🧢"</div>
+          </div>
+        </div>
+        <div class="fe">
+          <div class="fe-day">D3</div>
+          <div>
+            <div class="fe-title">Out for Delivery</div>
+            <div class="fe-sub">"Your Fit is on the way"</div>
+          </div>
+        </div>
+        <div class="fe">
+          <div class="fe-day">D13</div>
+          <div>
+            <div class="fe-title">Delivery Follow-up</div>
+            <div class="fe-sub">"Your fit pulled up —"</div>
+          </div>
+        </div>
+        <div class="fe">
+          <div class="fe-day">D27</div>
+          <div>
+            <div class="fe-title">Cross-Sell Email</div>
+            <div class="fe-sub">"One piece doesn't finish a look."</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-footer">
+        <span class="ff">Emails: <strong>4</strong></span>
+        <span class="ff">Duration: <strong>27 days</strong></span>
+        <span class="ff">Cross-sell: <strong>Day 27</strong></span>
+      </div>
+    </div>
+
+    <!-- CUSTOMER APPRECIATION -->
+    <div class="flow-card reveal">
+      <div class="flow-header">
+        <div>
+          <div class="flow-tag">Retention</div>
+          <div class="flow-name">Customer Appreciation</div>
+          <div class="flow-trigger">Trigger: Order Placed · 2 hr delay</div>
+        </div>
+        <div class="flow-live"><span class="fld"></span>Live</div>
+      </div>
+      <div class="flow-emails">
+        <div class="fe">
+          <div class="fe-day">D0</div>
+          <div>
+            <div class="fe-title">Customer Thank You</div>
+            <div class="fe-sub">"You're what makes us great!"</div>
+          </div>
+        </div>
+        <div class="fe">
+          <div class="fe-day">D3</div>
+          <div>
+            <div class="fe-title">Pre-order Reminder</div>
+            <div class="fe-sub">"As a reminder..." — upcoming drops</div>
+          </div>
+        </div>
+        <div class="fe">
+          <div class="fe-day">D10</div>
+          <div>
+            <div class="fe-title">Refer to Other Collections</div>
+            <div class="fe-sub">"Thank You!" — collection cross-referral</div>
+          </div>
+        </div>
+      </div>
+      <div class="flow-footer">
+        <span class="ff">Emails: <strong>3</strong></span>
+        <span class="ff">Duration: <strong>10 days</strong></span>
+        <span class="ff">Retention: <strong>Yes</strong></span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ░░ RESULTS ░░ -->
+<div class="results-bg">
+  <section class="reveal">
+    <div class="section-label">04 — The Results</div>
+    <h2>A brand-authentic email system, <span class="acc">built to scale</span></h2>
+    <p>OTMCLO now has a complete, professional email marketing infrastructure that matches the brand's energy and works around the clock. Every subscriber, every shopper, every customer — covered. The flows are live, the copy is on-brand, and the system runs without any manual input needed.</p>
+
+    <div class="stats-grid">
+      <div class="stat reveal">
+        <div class="stat-num">4</div>
+        <div class="stat-label">Live Automations</div>
+        <p class="stat-note">All running in Klaviyo</p>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-num">13+</div>
+        <div class="stat-label">Emails Built</div>
+        <p class="stat-note">+ SMS copy written</p>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-num">30m</div>
+        <div class="stat-label">Cart Recovery Speed</div>
+        <p class="stat-note">First touchpoint after abandonment</p>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-num">27d</div>
+        <div class="stat-label">Post-Purchase Journey</div>
+        <p class="stat-note">From order to cross-sell</p>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-num">2ch</div>
+        <div class="stat-label">Channels Used</div>
+        <p class="stat-note">Email + SMS with smart split</p>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Brand Voice</div>
+        <p class="stat-note">Sounds like OTMCLO, not a template</p>
+      </div>
+    </div>
+
+    <ul class="outcome-list reveal" style="margin-top:2rem">
+      <li>Every new subscriber enters a 3-email, 6-day welcome series that introduces the brand and drives a first purchase with a 10% discount code.</li>
+      <li>Abandoned checkouts are caught within 30 minutes — with an SMS for eligible contacts and a 3-email sequence for everyone else — including a final "last chance twin" push.</li>
+      <li>Every customer gets a 27-day post-purchase journey — from order confirmation through delivery to a cross-sell email that pushes them toward more collections.</li>
+      <li>A separate customer appreciation flow runs alongside post-purchase — thanking buyers, teasing upcoming drops, and referring them to other collections at day 10.</li>
+    </ul>
+
+    <div class="quote-block reveal" style="margin-top:2.5rem">
+      <p class="quote-text">"The emails sound like us — not like every other brand. The system's running, the flows are live, and it actually fits the brand."</p>
+      <div class="quote-attr">— OTMCLO</div>
+    </div>
+  </section>
+</div>
+
+<!-- ░░ CTA ░░ -->
+<div class="cta-section reveal">
+  <h2>Need your email system <span class="acc">built from scratch?</span></h2>
+  <p>Strategy, copy, design, and full Klaviyo setup — I handle the whole thing.</p>
+  <a href="mailto:hello@youremail.com" class="btn-primary">// Work With Me</a>
+</div>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
