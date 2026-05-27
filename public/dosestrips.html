@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dose Strips — Email Marketing Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+    :root{
+      --red:      #B03A2E;
+      --red-lt:   #CD6155;
+      --red-dk:   #7B241C;
+      --rust:     #C0392B;
+      --blush:    #F9C0B7;
+      --cream:    #FDF4F2;
+      --dark:     #120806;
+      --dark2:    #1C0D0A;
+      --dark3:    #261210;
+      --mid:      #331815;
+      --text:     #F5EDE8;
+      --muted:    #9E7B74;
+      --border:   rgba(176,58,46,.2);
+    }
+
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--dark);
+      color:var(--text);
+      font-family:'DM Sans',sans-serif;
+      font-weight:300;
+      line-height:1.75;
+      overflow-x:hidden;
+    }
+
+    /* subtle wave bg */
+    body::after{
+      content:'';position:fixed;inset:0;
+      background:
+        radial-gradient(ellipse 60% 40% at 80% 20%,rgba(176,58,46,.06) 0%,transparent 70%),
+        radial-gradient(ellipse 50% 35% at 20% 80%,rgba(176,58,46,.05) 0%,transparent 70%);
+      pointer-events:none;z-index:0;
+    }
+
+    /* ── HERO ── */
+    .hero{
+      min-height:100vh;
+      display:grid;place-items:center;text-align:center;
+      padding:6rem 2rem 5rem;
+      position:relative;overflow:hidden;
+      background:
+        radial-gradient(ellipse 90% 65% at 50% -5%,rgba(176,58,46,.2) 0%,transparent 60%),
+        var(--dark);
+      z-index:1;
+    }
+
+    /* texture dots */
+    .hero::before{
+      content:'';position:absolute;inset:0;
+      background-image:radial-gradient(circle,rgba(176,58,46,.12) 1px,transparent 1px);
+      background-size:32px 32px;pointer-events:none;
+    }
+
+    .hero::after{
+      content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+      background:linear-gradient(90deg,transparent,var(--blush),transparent);
+    }
+
+    .badge{
+      display:inline-flex;align-items:center;gap:.5rem;
+      font-size:.62rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+      color:var(--blush);border:1px solid rgba(249,192,183,.25);
+      padding:.45rem 1.2rem;border-radius:2rem;margin-bottom:2.5rem;
+      animation:fadeUp .8s ease both;
+      background:rgba(176,58,46,.1);position:relative;z-index:1;
+    }
+    .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--blush);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+    .eyebrow{
+      font-size:.67rem;letter-spacing:.3em;text-transform:uppercase;
+      color:var(--muted);margin-bottom:1.2rem;position:relative;z-index:1;
+      animation:fadeUp .9s .1s ease both;
+    }
+
+    h1{
+      font-family:'Playfair Display',serif;
+      font-size:clamp(3.5rem,10vw,9rem);
+      font-weight:900;line-height:.92;letter-spacing:-.02em;
+      margin-bottom:1.8rem;position:relative;z-index:1;
+      animation:fadeUp 1s .15s ease both;
+    }
+    .h1-main{color:var(--text)}
+    .h1-italic{font-style:italic;color:var(--red-lt)}
+    .h1-dot{color:var(--blush)}
+
+    .hero-tagline{
+      font-family:'Playfair Display',serif;font-style:italic;
+      font-size:1.1rem;color:var(--muted);margin-bottom:.8rem;
+      position:relative;z-index:1;
+      animation:fadeUp 1s .2s ease both;
+    }
+
+    .hero-sub{
+      max-width:560px;margin:0 auto 3.5rem;
+      color:var(--muted);font-size:.96rem;
+      position:relative;z-index:1;
+      animation:fadeUp 1s .25s ease both;
+    }
+
+    .meta-row{
+      display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;
+      position:relative;z-index:1;
+      animation:fadeUp 1s .35s ease both;
+    }
+    .meta-item{text-align:center}
+    .meta-label{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
+    .meta-val{font-family:'Playfair Display',serif;font-size:1rem;color:var(--blush)}
+
+    .scroll-hint{
+      position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+      display:flex;flex-direction:column;align-items:center;gap:.5rem;
+      z-index:1;animation:fadeUp 1s .6s ease both;
+    }
+    .scroll-hint span{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+    .scroll-line{width:1px;height:38px;background:linear-gradient(to bottom,var(--red-lt),transparent);animation:scrollp 2s infinite}
+    @keyframes scrollp{0%,100%{opacity:.3}50%{opacity:1}}
+
+    /* ── SERVICES STRIP ── */
+    .services-strip{
+      background:var(--dark2);
+      border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+      padding:1.7rem 2rem;text-align:center;position:relative;z-index:1;
+    }
+    .services-strip .tl{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:1.1rem}
+    .services-list{display:flex;gap:1rem 2.5rem;justify-content:center;flex-wrap:wrap}
+    .service-item{display:flex;align-items:center;gap:.45rem;font-size:.82rem;color:var(--text)}
+    .service-dot{width:5px;height:5px;border-radius:50%;background:var(--red-lt);flex-shrink:0}
+
+    /* ── KEY NUMBERS ── */
+    .hero-stats{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+      background:var(--dark3);border-bottom:1px solid var(--border);
+      position:relative;z-index:1;
+    }
+    .hstat{
+      padding:2.2rem 1.5rem;text-align:center;
+      border-right:1px solid var(--border);
+      transition:background .3s;position:relative;overflow:hidden;
+    }
+    .hstat:last-child{border-right:none}
+    .hstat:hover{background:var(--mid)}
+    .hstat::after{
+      content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+      width:0;height:2px;background:var(--red-lt);transition:width .4s;
+    }
+    .hstat:hover::after{width:50%}
+    .hstat-num{
+      font-family:'Playfair Display',serif;font-weight:700;
+      font-size:clamp(1.8rem,4vw,2.8rem);
+      color:var(--blush);line-height:1;margin-bottom:.4rem;
+    }
+    .hstat-label{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+    .hstat-note{font-size:.68rem;color:rgba(158,123,116,.55);margin-top:.25rem;font-style:italic}
+
+    /* ── SECTIONS ── */
+    section{max-width:900px;margin:0 auto;padding:5rem 2rem;position:relative;z-index:1}
+
+    .section-label{
+      font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;
+      color:var(--red-lt);margin-bottom:1.2rem;
+      display:flex;align-items:center;gap:.8rem;
+    }
+    .section-label::after{content:'';height:1px;background:var(--border);width:60px}
+
+    h2{
+      font-family:'Playfair Display',serif;
+      font-size:clamp(2rem,4.5vw,3.4rem);font-weight:700;
+      line-height:1.15;margin-bottom:1.8rem;
+    }
+    h2 em{font-style:italic;color:var(--red-lt)}
+    h2 .bl{color:var(--blush)}
+
+    p{color:#B08880;margin-bottom:1.2rem;font-size:.96rem}
+    p:last-child{margin-bottom:0}
+
+    .divider{
+      width:100%;height:1px;
+      background:linear-gradient(90deg,transparent,var(--border),transparent);
+      max-width:900px;margin:0 auto;position:relative;z-index:1;
+    }
+
+    /* ── PROBLEM CARDS ── */
+    .callout-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1.2rem;margin-top:2.5rem}
+    .callout-card{
+      background:var(--dark2);border:1px solid var(--border);border-radius:14px;
+      padding:1.7rem 1.5rem;position:relative;overflow:hidden;
+      transition:border-color .3s,transform .3s;
+    }
+    .callout-card:hover{border-color:var(--red-lt);transform:translateY(-3px)}
+    .callout-card::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:2px;
+      background:linear-gradient(90deg,var(--red-lt),var(--blush),transparent);
+      opacity:0;transition:opacity .3s;
+    }
+    .callout-card:hover::before{opacity:1}
+    .callout-icon{font-size:1.5rem;margin-bottom:.9rem}
+    .callout-title{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--blush);margin-bottom:.5rem}
+    .callout-body{font-size:.83rem;color:var(--muted);margin:0;line-height:1.6}
+
+    /* ── SOLUTION STEPS ── */
+    .steps{margin-top:2.5rem;display:flex;flex-direction:column}
+    .step{
+      display:grid;grid-template-columns:56px 1fr;gap:1.8rem;
+      padding:2rem 0;border-bottom:1px solid var(--border);align-items:start;
+    }
+    .step:last-child{border-bottom:none}
+    .step-num-wrap{display:flex;flex-direction:column;align-items:center;gap:.5rem}
+    .step-num{
+      width:42px;height:42px;border-radius:50%;
+      background:var(--dark2);border:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Playfair Display',serif;font-size:1.3rem;font-style:italic;
+      color:var(--blush);flex-shrink:0;
+    }
+    .step-vline{width:1px;flex:1;min-height:20px;background:linear-gradient(to bottom,var(--border),transparent)}
+    .step-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--text);margin-bottom:.5rem}
+    .step-body{font-size:.87rem;color:var(--muted);margin:0;line-height:1.65}
+
+    .pill-row{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.9rem}
+    .pill{
+      font-size:.67rem;letter-spacing:.06em;
+      background:var(--mid);border:1px solid var(--border);
+      color:var(--blush);padding:.28rem .85rem;border-radius:2rem;
+    }
+
+    /* ── EMAIL SEQUENCE PANELS ── */
+    .email-panels{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem}
+    @media(max-width:640px){.email-panels{grid-template-columns:1fr}}
+
+    .email-panel{
+      background:var(--dark2);border:1px solid var(--border);border-radius:16px;overflow:hidden;
+    }
+    .ep-header{
+      padding:1rem 1.4rem;border-bottom:1px solid var(--border);
+      display:flex;align-items:center;gap:.8rem;
+    }
+    .ep-icon{
+      width:32px;height:32px;border-radius:8px;
+      display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;
+    }
+    .epi-red{background:rgba(176,58,46,.2);border:1px solid var(--border)}
+    .epi-blush{background:rgba(249,192,183,.1);border:1px solid rgba(249,192,183,.2)}
+    .ep-title{font-family:'Playfair Display',serif;font-size:1rem;color:var(--text)}
+    .ep-count{
+      margin-left:auto;font-size:.65rem;font-weight:500;letter-spacing:.12em;
+      text-transform:uppercase;color:var(--muted);
+      background:var(--dark3);padding:.2rem .6rem;border-radius:2rem;border:1px solid var(--border);
+    }
+    .ep-emails{padding:1rem 1.4rem;display:flex;flex-direction:column;gap:.55rem}
+    .ep-email{
+      display:flex;align-items:flex-start;gap:.7rem;
+      padding:.65rem .8rem;background:var(--dark3);border-radius:9px;
+      border:1px solid rgba(176,58,46,.08);transition:border-color .25s;
+    }
+    .ep-email:hover{border-color:var(--border)}
+    .epe-num{
+      font-family:'Playfair Display',serif;font-size:1rem;font-style:italic;
+      color:var(--red-lt);opacity:.7;min-width:18px;line-height:1.5;flex-shrink:0;
+    }
+    .epe-info{}
+    .epe-title{font-size:.83rem;font-weight:500;color:var(--text);line-height:1.4}
+    .epe-copy{font-size:.72rem;color:var(--muted);margin-top:.15rem;font-style:italic;line-height:1.4}
+
+    /* ── PRODUCT CALLOUT ── */
+    .product-row{
+      display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;
+      margin-top:2rem;
+    }
+    @media(max-width:480px){.product-row{grid-template-columns:1fr}}
+    .product-card{
+      background:var(--dark2);border:1px solid var(--border);
+      border-radius:14px;padding:1.5rem;
+      display:flex;flex-direction:column;gap:.5rem;
+      transition:border-color .3s;
+    }
+    .product-card:hover{border-color:var(--red-lt)}
+    .product-emoji{font-size:1.8rem;margin-bottom:.3rem}
+    .product-name{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--blush)}
+    .product-desc{font-size:.8rem;color:var(--muted);line-height:1.55;margin:0}
+    .product-tag{
+      display:inline-block;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;
+      color:var(--red-lt);border:1px solid var(--border);
+      padding:.18rem .6rem;border-radius:2rem;margin-top:.3rem;
+      width:fit-content;
+    }
+
+    /* ── RESULTS ── */
+    .results-bg{
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 50%,rgba(176,58,46,.08) 0%,transparent 70%),
+        var(--dark2);
+      border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+      position:relative;z-index:1;
+    }
+    .stats-grid{
+      display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));
+      gap:1px;background:var(--border);border:1px solid var(--border);
+      border-radius:16px;overflow:hidden;margin-top:2.5rem;
+    }
+    .stat{background:var(--dark2);padding:1.9rem 1.2rem;text-align:center;transition:background .3s}
+    .stat:hover{background:var(--dark3)}
+    .stat-num{
+      font-family:'Playfair Display',serif;font-weight:700;
+      font-size:clamp(1.9rem,3.5vw,3rem);
+      color:var(--blush);line-height:1;margin-bottom:.4rem;
+    }
+    .stat-label{font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+    .stat-note{font-size:.67rem;color:rgba(158,123,116,.5);margin-top:.25rem;font-style:italic}
+
+    /* ── QUOTE ── */
+    .quote-block{
+      border-left:2px solid var(--red-lt);padding:1rem 0 1rem 2rem;margin:2.5rem 0;
+      background:linear-gradient(90deg,rgba(176,58,46,.06),transparent);
+      border-radius:0 8px 8px 0;
+    }
+    .quote-text{
+      font-family:'Playfair Display',serif;font-size:1.45rem;
+      font-style:italic;line-height:1.5;color:var(--text);margin-bottom:.7rem;
+    }
+    .quote-attr{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+
+    /* ── CTA ── */
+    .cta-section{
+      text-align:center;padding:6rem 2rem;position:relative;z-index:1;
+      background:
+        radial-gradient(ellipse 70% 80% at 50% 100%,rgba(176,58,46,.12) 0%,transparent 70%),
+        var(--dark);
+    }
+    .cta-section h2{margin-bottom:1rem}
+    .cta-section p{color:var(--muted);margin-bottom:2.5rem}
+    .btn-primary{
+      display:inline-block;padding:.9rem 2.5rem;
+      background:var(--rust);color:#fff;
+      font-size:.75rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+      text-decoration:none;border-radius:2rem;
+      transition:background .25s,transform .2s,box-shadow .2s;
+    }
+    .btn-primary:hover{background:var(--red-lt);transform:translateY(-2px);box-shadow:0 10px 30px rgba(176,58,46,.4)}
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity .75s ease,transform .75s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+
+    @media(max-width:640px){
+      .step{grid-template-columns:46px 1fr;gap:1rem}
+      .stats-grid{grid-template-columns:1fr 1fr}
+      .hstat{border-right:none;border-bottom:1px solid var(--border)}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ░░ HERO ░░ -->
+<div class="hero">
+  <div style="position:relative;z-index:2">
+    <div class="badge"><span class="badge-dot"></span>Case Study · Email Marketing Design</div>
+    <p class="eyebrow">Figma · Klaviyo · Copywriting · Health Supplement</p>
+    <h1>
+      <div class="h1-main">Dose</div>
+      <div class="h1-italic">Strips<span class="h1-dot">.</span></div>
+    </h1>
+    <p class="hero-tagline">no pills. no powders. just two small strips.</p>
+    <p class="hero-sub">A health supplement brand selling dissolvable oral strips needed a complete set of on-brand emails — so I designed and wrote everything from scratch in Figma, built for Klaviyo.</p>
+    <div class="meta-row">
+      <div class="meta-item"><div class="meta-label">Brand</div><div class="meta-val">Dose Strips</div></div>
+      <div class="meta-item"><div class="meta-label">Industry</div><div class="meta-val">Health Supplement</div></div>
+      <div class="meta-item"><div class="meta-label">Tools</div><div class="meta-val">Figma · Klaviyo</div></div>
+      <div class="meta-item"><div class="meta-label">Deliverables</div><div class="meta-val">8 Custom Email Templates</div></div>
+      <div class="meta-item"><div class="meta-label">Scope</div><div class="meta-val">Design + Copy</div></div>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
+</div>
+
+<!-- ░░ SERVICES ░░ -->
+<div class="services-strip">
+  <p class="tl">Deliverables</p>
+  <div class="services-list">
+    <span class="service-item"><span class="service-dot"></span>Email Copywriting</span>
+    <span class="service-item"><span class="service-dot"></span>Email Template Design (Figma)</span>
+    <span class="service-item"><span class="service-dot"></span>Welcome Series (4 emails)</span>
+    <span class="service-item"><span class="service-dot"></span>Abandoned Cart Series (4 emails)</span>
+    <span class="service-item"><span class="service-dot"></span>Klaviyo-Ready Templates</span>
+  </div>
+</div>
+
+<!-- ░░ KEY NUMBERS ░░ -->
+<div class="hero-stats">
+  <div class="hstat reveal">
+    <div class="hstat-num">8</div>
+    <div class="hstat-label">Custom Email Templates</div>
+    <p class="hstat-note">All designed in Figma</p>
+  </div>
+  <div class="hstat reveal">
+    <div class="hstat-num">2</div>
+    <div class="hstat-label">Full Series Built</div>
+    <p class="hstat-note">Welcome + Abandoned Cart</p>
+  </div>
+  <div class="hstat reveal">
+    <div class="hstat-num">2</div>
+    <div class="hstat-label">Products Featured</div>
+    <p class="hstat-note">Sleep Strip + Beauty Collagen Strip</p>
+  </div>
+  <div class="hstat reveal">
+    <div class="hstat-num">100%</div>
+    <div class="hstat-label">Original Copy</div>
+    <p class="hstat-note">Written from scratch</p>
+  </div>
+</div>
+
+<!-- ░░ PRODUCTS ░░ -->
+<section class="reveal">
+  <div class="section-label">The Products</div>
+  <h2>Two strips. Two <em>big problems solved.</em></h2>
+  <p>Dose Strips sells dissolvable oral strips that absorb faster than pills, require no water, and can be taken anywhere. Each strip targets a specific need — making the email copy strategy clear from the start: lead with the problem, show the solution, let the product speak for itself.</p>
+  <div class="product-row">
+    <div class="product-card reveal">
+      <div class="product-emoji">💤</div>
+      <div class="product-name">Dose Sleep Strip</div>
+      <p class="product-desc">For nights when your mind won't switch off — formulated to help you wind down and wake up feeling more rested. Use as part of your wind-down routine.</p>
+      <span class="product-tag">Sleep Support</span>
+    </div>
+    <div class="product-card reveal">
+      <div class="product-emoji">✨</div>
+      <div class="product-name">Dose Beauty Collagen Strip</div>
+      <p class="product-desc">Daily skin and joint support in a single strip — no pills, no powders, just fast-dissolving strips you can take anywhere, any time.</p>
+      <span class="product-tag">Beauty + Wellness</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ░░ PROBLEM ░░ -->
+<section class="reveal">
+  <div class="section-label">01 — The Challenge</div>
+  <h2>A unique product that needed <em>unique emails</em></h2>
+  <p>Dose Strips is a genuinely innovative product — but that novelty also creates a challenge. Most potential customers have never heard of dissolvable supplement strips. They don't know how they work, they don't know why they're better than the supplements they already use, and they need education and reassurance before they'll ever click "buy."</p>
+  <p>The emails needed to do more than just look good. They needed to explain the product clearly, build trust quickly, address the natural "but does it actually work?" scepticism, and move subscribers toward a purchase — all within a brand that felt premium, clean, and different from the typical supplement space.</p>
+
+  <div class="callout-grid">
+    <div class="callout-card reveal">
+      <div class="callout-icon">❓</div>
+      <div class="callout-title">Unfamiliar Product Format</div>
+      <p class="callout-body">Dissolvable strips are still new to most consumers. The emails had to educate first — explaining what they are, why they absorb faster, and why that matters — before making any sales pitch.</p>
+    </div>
+    <div class="callout-card reveal">
+      <div class="callout-icon">💊</div>
+      <div class="callout-title">Heavy Supplement Competition</div>
+      <p class="callout-body">Shoppers already have supplement routines. The copy needed to show why Dose Strips are genuinely better — not just different — compared to the bottles already sitting on their shelves.</p>
+    </div>
+    <div class="callout-card reveal">
+      <div class="callout-icon">🎨</div>
+      <div class="callout-title">Brand Identity to Translate</div>
+      <p class="callout-body">Dose Strips has a bold, modern visual identity — deep reds, clean layouts, warm photography. Every email template had to feel unmistakably on-brand while still being clean and conversion-focused.</p>
+    </div>
+    <div class="callout-card reveal">
+      <div class="callout-icon">🛒</div>
+      <div class="callout-title">Cart Recovery for a Considered Purchase</div>
+      <p class="callout-body">Health supplement purchases are thought about. Abandoned cart emails couldn't just say "your cart is waiting" — they needed to reinforce trust, handle doubts, and create urgency through value, not just pressure.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ░░ SOLUTION ░░ -->
+<section class="reveal">
+  <div class="section-label">02 — The Solution</div>
+  <h2>8 emails designed and written to <em>educate, convert,</em> and recover</h2>
+  <p>Two complete email series were built — a welcome sequence to nurture new subscribers and a four-part abandoned cart sequence to recover lost sales. Each email was designed in Figma to match Dose Strips' rich red brand identity, and every word of copy was written from scratch with a clear conversion goal.</p>
+
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num-wrap">
+        <div class="step-num">1</div>
+        <div class="step-vline"></div>
+      </div>
+      <div>
+        <div class="step-title">Custom Email Design in Figma</div>
+        <p class="step-body">All 8 email templates were designed from scratch in Figma — built around Dose Strips' deep red, blush pink, and warm cream palette. The layouts used bold typography, clean product imagery, and structured content sections that guide the reader's eye naturally toward the CTA. Designs were optimised for mobile rendering and built for clean import into Klaviyo.</p>
+        <div class="pill-row">
+          <span class="pill">Brand-Matched Design</span><span class="pill">Red + Blush Palette</span>
+          <span class="pill">Mobile-First</span><span class="pill">CTA-Driven Layouts</span>
+          <span class="pill">Klaviyo-Ready</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step reveal">
+      <div class="step-num-wrap">
+        <div class="step-num">2</div>
+        <div class="step-vline"></div>
+      </div>
+      <div>
+        <div class="step-title">Welcome Series — 4 Emails to Build Trust and Drive First Purchase</div>
+        <p class="step-body">The welcome series was written to take a brand-new subscriber from curious to converted. Email 1 delivers their discount code with a warm introduction to the brand. Email 2 explains the science behind why dose strips work better than traditional supplements. Email 3 tackles the two biggest customer needs — better sleep and better skin — showing how two strips solve both. Email 4 closes with real customer testimonials and a nudge to pick their bestseller. Every email carries a personalised discount code and ends with a specific, low-friction CTA.</p>
+        <div class="pill-row">
+          <span class="pill">Discount Code Delivery</span><span class="pill">Product Education</span>
+          <span class="pill">Two-Strip Strategy</span><span class="pill">Social Proof</span>
+          <span class="pill">Personalised CTAs</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step reveal">
+      <div class="step-num-wrap">
+        <div class="step-num">3</div>
+      </div>
+      <div>
+        <div class="step-title">Abandoned Cart Series — 4 Emails to Recover Lost Sales</div>
+        <p class="step-body">The abandoned cart sequence was built to work through four distinct angles — each one designed to meet the customer wherever they are in their hesitation. Email 1 is a warm, gentle reminder that their welcome code is still waiting. Email 2 shows exactly what they're leaving behind — product details, benefits summary, and proof that real people are seeing results. Email 3 reassures them with FAQs and makes the return-to-cart as frictionless as possible. Email 4 is the final last-chance push with urgency, customer reviews, and a clear "complete my order" CTA.</p>
+        <div class="pill-row">
+          <span class="pill">Welcome Code Reminder</span><span class="pill">Product Detail Email</span>
+          <span class="pill">FAQ-Based Trust</span><span class="pill">Final Urgency</span>
+          <span class="pill">Review-Backed Copy</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ EMAIL SEQUENCE BREAKDOWN ░░ -->
+<div style="max-width:900px;margin:0 auto;padding:0 2rem 4rem;position:relative;z-index:1">
+  <div class="email-panels">
+
+    <!-- WELCOME SERIES -->
+    <div class="email-panel reveal">
+      <div class="ep-header">
+        <div class="ep-icon epi-red">💌</div>
+        <div class="ep-title">Welcome Series</div>
+        <div class="ep-count">4 Emails</div>
+      </div>
+      <div class="ep-emails">
+        <div class="ep-email">
+          <div class="epe-num">1</div>
+          <div class="epe-info">
+            <div class="epe-title">Welcome to Dose Strips</div>
+            <div class="epe-copy">"Hey there! Here is your code for [X% off] your first order" — brand intro + welcome code</div>
+          </div>
+        </div>
+        <div class="ep-email">
+          <div class="epe-num">2</div>
+          <div class="epe-info">
+            <div class="epe-title">Why Dose Strips Works So Well</div>
+            <div class="epe-copy">"Your strip that will change your life" — product education, mechanism, vs pills</div>
+          </div>
+        </div>
+        <div class="ep-email">
+          <div class="epe-num">3</div>
+          <div class="epe-info">
+            <div class="epe-title">Sleep and Glow in Two Strips</div>
+            <div class="epe-copy">"Two big problems, two small strips" — Sleep Strip + Collagen Strip side by side</div>
+          </div>
+        </div>
+        <div class="ep-email">
+          <div class="epe-num">4</div>
+          <div class="epe-info">
+            <div class="epe-title">What People Feel on Dose Strips</div>
+            <div class="epe-copy">"Shop bestsellers" — social proof, reviews, pick your routine CTA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABANDONED CART -->
+    <div class="email-panel reveal">
+      <div class="ep-header">
+        <div class="ep-icon epi-blush">🛒</div>
+        <div class="ep-title">Abandoned Cart Series</div>
+        <div class="ep-count">4 Emails</div>
+      </div>
+      <div class="ep-emails">
+        <div class="ep-email">
+          <div class="epe-num">1</div>
+          <div class="epe-info">
+            <div class="epe-title">Last Chance for Your Code</div>
+            <div class="epe-copy">"Before your code expires, here is one more time" — code reminder + cart CTA</div>
+          </div>
+        </div>
+        <div class="ep-email">
+          <div class="epe-num">2</div>
+          <div class="epe-info">
+            <div class="epe-title">Your Dose Strips Are Still Waiting</div>
+            <div class="epe-copy">"Get back in your cart in one click" — product recap, FAQs, testimonial, return CTA</div>
+          </div>
+        </div>
+        <div class="ep-email">
+          <div class="epe-num">3</div>
+          <div class="epe-info">
+            <div class="epe-title">Still Thinking About Your Dose Strips?</div>
+            <div class="epe-copy">"Finish my order" — reassurance, one-click return, benefits reminder</div>
+          </div>
+        </div>
+        <div class="ep-email">
+          <div class="epe-num">4</div>
+          <div class="epe-info">
+            <div class="epe-title">Last Chance for Your Dose Strips</div>
+            <div class="epe-copy">"Your cart will close soon" — final urgency, reviews, complete my order CTA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ░░ RESULTS ░░ -->
+<div class="results-bg">
+  <section class="reveal">
+    <div class="section-label">03 — The Results</div>
+    <h2>A complete email system, <em>ready to convert</em></h2>
+    <p>Dose Strips now has a full email marketing foundation — beautifully designed, strategically written, and ready to run. Every new subscriber gets a four-part welcome journey that educates them, builds desire, and drives a first purchase. Every abandoned cart gets a four-part recovery sequence that handles objections and creates urgency through value.</p>
+
+    <div class="stats-grid">
+      <div class="stat reveal">
+        <div class="stat-num">8</div>
+        <div class="stat-label">Emails Designed</div>
+        <p class="stat-note">Custom Figma templates</p>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-num">8</div>
+        <div class="stat-label">Emails Written</div>
+        <p class="stat-note">100% original copy</p>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Full Series Built</div>
+        <p class="stat-note">Welcome + Abandoned Cart</p>
+      </div>
+      <div class="stat reveal">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Products Showcased</div>
+        <p class="stat-note">Sleep + Beauty Collagen</p>
+      </div>
+    </div>
+
+    <div class="quote-block reveal" style="margin-top:3rem">
+      <p class="quote-text">"Every email had a clear job — from the first welcome to the final cart recovery. The design and copy worked together to tell the Dose Strips story in a way that felt premium, not pushy."</p>
+      <div class="quote-attr">— Dose Strips</div>
+    </div>
+
+    <p style="margin-top:1.5rem">The work delivered a conversion-ready email system that looks as good as the product it's selling — and gives every subscriber a compelling reason to try their first strip.</p>
+  </section>
+</div>
+
+<!-- ░░ CTA ░░ -->
+<div class="cta-section reveal">
+  <h2>Need emails that look great <em>and convert?</em></h2>
+  <p>I design in Figma and write copy that sells — from welcome series to full cart recovery flows.</p>
+  <a href="mailto:hello@youremail.com" class="btn-primary">Work With Me</a>
+</div>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
