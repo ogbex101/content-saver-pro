@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Plus, Pencil, Trash2, X, Check, Star as StarIcon } from "lucide-react";
+import { Plus, Pencil, Trash2, X, Check, Star as StarIcon, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import ImageUpload from "./ImageUpload";
@@ -113,13 +113,29 @@ const AdminProjects = () => {
         />
         <span className="text-sm font-bold">⭐ Feature on Homepage</span>
       </label>
+      
+      {/* Description field with HTML support - paste your case study link here */}
+      <div className="space-y-1">
+        <label className="text-xs font-bold text-muted-foreground">Description (HTML supported)</label>
+        <textarea 
+          placeholder='Paste your case study link HTML here. Example: &lt;a href="/case-studies/your-file.html" target="_blank" style="color:#F9A825; text-decoration:none; font-size:10px; font-weight:bold;"&gt;📖 Read Case Study →&lt;/a&gt;'
+          value={form.description} 
+          onChange={(e) => setForm({ ...form, description: e.target.value })} 
+          rows={4}
+          className="w-full px-4 py-2.5 rounded-xl border border-border/50 bg-card text-sm font-mono focus:outline-none focus:ring-2 focus:ring-gold/50" 
+        />
+        <p className="text-xs text-muted-foreground">
+          You can paste HTML links here. They will be rendered on the project card.
+        </p>
+      </div>
+
       <div className="grid md:grid-cols-2 gap-3">
         <input placeholder="Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full px-4 py-2.5 rounded-xl border border-border/50 bg-card text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-gold/50" />
         <input placeholder="Industry" value={form.industry} onChange={(e) => setForm({ ...form, industry: e.target.value })} className="w-full px-4 py-2.5 rounded-xl border border-border/50 bg-card text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-gold/50" />
         <input placeholder="Platform" value={form.platform} onChange={(e) => setForm({ ...form, platform: e.target.value })} className="w-full px-4 py-2.5 rounded-xl border border-border/50 bg-card text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-gold/50" />
         <input placeholder="Key Result" value={form.key_result} onChange={(e) => setForm({ ...form, key_result: e.target.value })} className="w-full px-4 py-2.5 rounded-xl border border-border/50 bg-card text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-gold/50" />
       </div>
-      <textarea placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={3} className="w-full px-4 py-2.5 rounded-xl border border-border/50 bg-card text-sm font-semibold resize-none focus:outline-none focus:ring-2 focus:ring-gold/50" />
+      
       <div className="grid md:grid-cols-2 gap-3">
         <input placeholder="Figma Link (optional)" value={form.figma_link} onChange={(e) => setForm({ ...form, figma_link: e.target.value })} className="w-full px-4 py-2.5 rounded-xl border border-border/50 bg-card text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-gold/50" />
         <ImageUpload
@@ -202,6 +218,12 @@ const AdminProjects = () => {
                     <span className="text-xs text-gold font-bold">{p.key_result}</span>
                     {p.project_images && p.project_images.length > 0 && (
                       <p className="text-xs text-muted-foreground mt-1 font-bold">{p.project_images.length} gallery image(s)</p>
+                    )}
+                    {/* Show preview of description HTML in admin panel */}
+                    {p.description && p.description.includes('<a') && (
+                      <div className="mt-1 text-xs text-gold flex items-center gap-1">
+                        <ExternalLink size={10} /> Has case study link
+                      </div>
                     )}
                   </div>
                 </div>
