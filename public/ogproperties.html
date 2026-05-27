@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OG Properties — monday.com CRM Case Study</title>
+  <meta name="description" content="How I built a full real estate transaction CRM on monday.com for OG Properties — tracking $27M+ in annual transactions with 25 automations, automated task generation, and a Pre-Listing to Closed pipeline."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --blue:#0073EA;--blue-lt:#4BA6FF;--blue-sky:#E8F3FF;
+      --green:#00C875;--orange:#FF7575;
+      --dark:#050A14;--dark2:#081120;--dark3:#0C192E;--mid:#152540;
+      --text:#EEF4FF;--muted:#7A9BC8;--border:rgba(75,166,255,.15);
+    }
+    html{scroll-behavior:smooth}
+    body{background:var(--dark);color:var(--text);font-family:'Inter',sans-serif;font-weight:300;line-height:1.7;overflow-x:hidden}
+
+    /* ── HERO ── */
+    .hero{
+      min-height:100vh;display:grid;grid-template-columns:1fr 1fr;
+      position:relative;overflow:hidden;
+    }
+    @media(max-width:860px){.hero{grid-template-columns:1fr;min-height:auto}}
+    .hero-left{
+      background:var(--blue);
+      padding:5rem 4rem;display:flex;flex-direction:column;justify-content:center;
+      position:relative;overflow:hidden;
+    }
+    .hero-left::after{content:'';position:absolute;bottom:-4rem;right:-4rem;width:200px;height:200px;background:rgba(255,255,255,.06);border-radius:50%}
+    .hero-left::before{content:'';position:absolute;top:-3rem;left:-3rem;width:150px;height:150px;background:rgba(255,255,255,.04);border-radius:50%}
+    .cs-tag{display:inline-flex;align-items:center;gap:.4rem;font-size:.62rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;background:rgba(255,255,255,.15);color:#fff;padding:.35rem .9rem;border-radius:2rem;margin-bottom:2rem;position:relative;z-index:1;animation:fadeUp .8s ease both}
+    .tag-dot{width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+    h1{font-family:'Outfit',sans-serif;font-weight:900;font-size:clamp(3rem,7vw,6rem);line-height:.92;letter-spacing:-.02em;color:#fff;margin-bottom:1.5rem;position:relative;z-index:1;animation:fadeUp 1s .15s ease both}
+    .hero-tagline{font-size:.9rem;color:rgba(255,255,255,.7);margin-bottom:2.5rem;position:relative;z-index:1;border-left:2px solid rgba(255,255,255,.3);padding-left:1rem;animation:fadeUp 1s .25s ease both}
+    .hero-meta-left{display:flex;flex-direction:column;gap:.7rem;position:relative;z-index:1;animation:fadeUp 1s .3s ease both}
+    .hml-row{display:flex;gap:.8rem;align-items:center}
+    .hml-label{font-size:.6rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45);min-width:90px}
+    .hml-val{font-size:.85rem;font-weight:600;color:#fff}
+    .hero-right{background:var(--dark2);padding:5rem 4rem;display:flex;flex-direction:column;justify-content:center;border-left:1px solid var(--border)}
+    .hero-eyebrow{font-size:.62rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--blue-lt);margin-bottom:1.5rem;animation:fadeUp .9s .15s ease both}
+    .hero-summary{font-size:1rem;color:var(--muted);line-height:1.8;animation:fadeUp 1s .25s ease both;margin-bottom:2.5rem}
+    .hero-pills{display:flex;flex-wrap:wrap;gap:.5rem;animation:fadeUp 1s .35s ease both}
+    .pill{font-size:.68rem;font-weight:500;letter-spacing:.06em;border:1px solid var(--border);color:var(--blue-lt);padding:.28rem .8rem;border-radius:2rem}
+
+    /* ── BANDS ── */
+    .stat-band{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));background:var(--dark3);border-bottom:1px solid var(--border)}
+    .sbs{padding:1.8rem 1.2rem;text-align:center;border-right:1px solid var(--border);transition:background .25s;position:relative;overflow:hidden}
+    .sbs:last-child{border-right:none}
+    .sbs:hover{background:var(--mid)}
+    .sbs::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--blue);transform:scaleX(0);transition:transform .4s;transform-origin:left}
+    .sbs:hover::before{transform:scaleX(1)}
+    .sbs-num{font-family:'Outfit',sans-serif;font-weight:900;font-size:clamp(1.6rem,3.5vw,2.5rem);color:var(--blue-lt);line-height:1;margin-bottom:.3rem}
+    .sbs-lbl{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+    .sbs-note{font-size:.62rem;color:rgba(122,155,200,.5);margin-top:.2rem}
+
+    /* ── SECTIONS ── */
+    section{max-width:960px;margin:0 auto;padding:5rem 2rem;position:relative;z-index:1}
+    .sec-label{font-size:.6rem;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--blue-lt);margin-bottom:1.2rem;display:flex;align-items:center;gap:.8rem}
+    .sec-label::after{content:'';height:1px;background:var(--border);width:60px}
+    h2{font-family:'Outfit',sans-serif;font-weight:800;font-size:clamp(1.8rem,4vw,3.2rem);line-height:1.05;letter-spacing:-.01em;margin-bottom:1.5rem}
+    h2 em{font-style:normal;color:var(--blue-lt)}
+    p{color:var(--muted);font-size:.94rem;margin-bottom:1.1rem;line-height:1.75}
+    p:last-child{margin-bottom:0}
+    .divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);max-width:960px;margin:0 auto}
+
+    /* ── PIPELINE ── */
+    .pipeline{display:flex;gap:0;margin-top:2rem;overflow-x:auto;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+    .pipe-stage{flex:1;min-width:160px;padding:1.4rem 1.2rem;border-right:1px solid var(--border);background:var(--dark2);transition:background .25s}
+    .pipe-stage:last-child{border-right:none}
+    .pipe-stage:hover{background:var(--dark3)}
+    .ps-tag{font-size:.58rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.2rem .55rem;border-radius:2rem;display:inline-block;margin-bottom:.8rem}
+    .ps-tag.pre{background:rgba(162,93,220,.15);color:#B47FEB}
+    .ps-tag.active{background:rgba(0,200,117,.12);color:var(--green)}
+    .ps-tag.closing{background:rgba(255,203,0,.1);color:#FFCB00}
+    .ps-tag.sold{background:rgba(0,115,234,.12);color:var(--blue-lt)}
+    .ps-title{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.5rem}
+    .ps-items{list-style:none;display:flex;flex-direction:column;gap:.3rem}
+    .ps-items li{font-size:.75rem;color:var(--muted);display:flex;align-items:center;gap:.4rem}
+    .ps-items li::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--blue-lt);flex-shrink:0}
+
+    /* ── AUTO LIST ── */
+    .auto-grid{display:flex;flex-direction:column;gap:.7rem;margin-top:1.5rem}
+    .auto-row{display:flex;gap:1rem;align-items:flex-start;background:var(--dark2);border:1px solid var(--border);border-radius:10px;padding:.9rem 1.1rem;transition:border-color .25s}
+    .auto-row:hover{border-color:rgba(75,166,255,.35)}
+    .auto-icon{font-size:1rem;flex-shrink:0;margin-top:.05rem}
+    .auto-text{font-size:.83rem;color:var(--muted);line-height:1.5}
+    .auto-text strong{color:var(--blue-lt)}
+
+    /* ── TWO COL ── */
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem}
+    @media(max-width:640px){.two-col{grid-template-columns:1fr}}
+    .block{background:var(--dark2);border:1px solid var(--border);border-radius:14px;padding:1.6rem}
+    .block-title{font-size:.6rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--blue-lt);margin-bottom:1rem;display:flex;align-items:center;gap:.6rem}
+    .block-title::after{content:'';height:1px;background:var(--border);flex:1}
+    .block p{font-size:.85rem;color:var(--muted);margin-bottom:.7rem;line-height:1.65}
+    .feat-list{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+    .feat-list li{display:flex;align-items:flex-start;gap:.65rem;font-size:.83rem;color:var(--muted)}
+    .feat-list li::before{content:'▸';color:var(--blue-lt);font-size:.65rem;margin-top:.2rem;flex-shrink:0}
+    .feat-list span{color:var(--text);font-weight:500}
+
+    /* ── RESULTS ── */
+    .results-bg{background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(0,115,234,.07) 0%,transparent 70%),var(--dark2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .results-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:2.5rem}
+    .rstat{background:var(--dark2);padding:1.8rem 1.2rem;text-align:center;transition:background .3s}
+    .rstat:hover{background:var(--dark3)}
+    .rs-num{font-family:'Outfit',sans-serif;font-weight:900;font-size:clamp(1.6rem,3vw,2.4rem);color:var(--blue-lt);line-height:1;margin-bottom:.3rem}
+    .rs-lbl{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+    .rs-note{font-size:.63rem;color:rgba(122,155,200,.45);margin-top:.2rem}
+
+    /* ── QUOTE ── */
+    .quote-block{border-left:3px solid var(--blue-lt);padding:1rem 0 1rem 2rem;margin:2.5rem 0;background:linear-gradient(90deg,rgba(0,115,234,.06),transparent);border-radius:0 8px 8px 0}
+    .quote-text{font-family:'Outfit',sans-serif;font-size:1.3rem;line-height:1.45;color:var(--text);margin-bottom:.6rem}
+    .quote-attr{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+
+    /* ── CTA ── */
+    .cta-section{text-align:center;padding:6rem 2rem;background:radial-gradient(ellipse 60% 80% at 50% 100%,rgba(0,115,234,.1) 0%,transparent 70%),var(--dark)}
+    .cta-section h2{font-family:'Outfit',sans-serif;font-size:clamp(2rem,4.5vw,3.5rem);margin-bottom:1rem}
+    .cta-section p{color:var(--muted);margin-bottom:2.5rem}
+    .btn{display:inline-block;padding:.9rem 2.4rem;background:var(--blue);color:#fff;font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-radius:8px;transition:background .2s,transform .2s,box-shadow .2s}
+    .btn:hover{background:#0062C4;transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,115,234,.4)}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    @media(max-width:860px){.hero-left,.hero-right{padding:4rem 1.5rem}}
+    @media(max-width:600px){.stat-band{grid-template-columns:1fr 1fr}.sbs:nth-child(even){border-right:none}}
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-left">
+    <div class="cs-tag"><span class="tag-dot"></span>Case Study · monday.com CRM</div>
+    <h1>OG<br>Properties</h1>
+    <p class="hero-tagline">Real estate transaction management — from pre-listing to closed deal, fully automated.</p>
+    <div class="hero-meta-left">
+      <div class="hml-row"><span class="hml-label">Client</span><span class="hml-val">OG Properties (Jeff Othen)</span></div>
+      <div class="hml-row"><span class="hml-label">Industry</span><span class="hml-val">Real Estate Agency</span></div>
+      <div class="hml-row"><span class="hml-label">Platform</span><span class="hml-val">monday.com CRM</span></div>
+      <div class="hml-row"><span class="hml-label">Automations</span><span class="hml-val">25 Active</span></div>
+      <div class="hml-row"><span class="hml-label">Volume</span><span class="hml-val">$27.2M+ tracked (2023)</span></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <p class="hero-eyebrow">Real Estate · CRM · Automations · Transaction Tracking</p>
+    <p class="hero-summary">OG Properties needed a full CRM to manage dozens of concurrent real estate transactions — condos, freeholds, leases — each with unique task checklists, document requirements, and closing timelines. I built the entire system on monday.com from scratch, including 25 automations that move deals through the pipeline automatically.</p>
+    <div class="hero-pills">
+      <span class="pill">Transaction CRM</span><span class="pill">25 Automations</span><span class="pill">Pipeline Boards</span>
+      <span class="pill">Auto Task Creation</span><span class="pill">Commission Tracking</span><span class="pill">3 Annual Boards</span>
+    </div>
+  </div>
+</div>
+
+<div class="stat-band">
+  <div class="sbs reveal"><div class="sbs-num">25</div><div class="sbs-lbl">Active Automations</div><p class="sbs-note">All live and running</p></div>
+  <div class="sbs reveal"><div class="sbs-num">$27.2M</div><div class="sbs-lbl">Sold Volume Tracked</div><p class="sbs-note">2023 board alone</p></div>
+  <div class="sbs reveal"><div class="sbs-num">$20.3M</div><div class="sbs-lbl">Listing Price Sum</div><p class="sbs-note">2023 board</p></div>
+  <div class="sbs reveal"><div class="sbs-num">781</div><div class="sbs-lbl">Documents Tracked</div><p class="sbs-note">Per transaction records</p></div>
+  <div class="sbs reveal"><div class="sbs-num">3yrs</div><div class="sbs-lbl">Annual Boards</div><p class="sbs-note">2022 · 2023 · 2024</p></div>
+  <div class="sbs reveal"><div class="sbs-num">20+</div><div class="sbs-lbl">Auto-Created Tasks</div><p class="sbs-note">Per Freehold closing</p></div>
+</div>
+
+<!-- PROBLEM -->
+<section class="reveal">
+  <div class="sec-label">01 — The Problem</div>
+  <h2>A growing agency with <em>no transaction system.</em></h2>
+  <p>OG Properties was handling a high volume of real estate transactions — condos, freehold listings, lease deals, buyer and seller closings — each needing its own checklist of tasks, lawyer coordination, document collection, and commission tracking. Managing all of this manually across a multi-agent team led to missed steps, disorganised closing folders, and no clear view of what was active, closing, or sold.</p>
+  <p>There was no way to automatically generate the right closing tasks for each property type, no pipeline view from pre-listing through to closed, and no system to alert agents when something was due.</p>
+  <div class="two-col">
+    <div class="block reveal">
+      <div class="block-title">Pain Points</div>
+      <ul class="feat-list">
+        <li><span>No pipeline structure</span> — deals had no stages from listing to close</li>
+        <li><span>Manual task lists</span> — closing checklists were recreated from scratch every time</li>
+        <li><span>No commission tracking</span> — Comm %, Gross Commission, # of Ends were unstructured</li>
+        <li><span>No deadline alerts</span> — missed due dates on lawyer submissions and closing tasks</li>
+        <li><span>No historical data</span> — 2022 and 2023 transactions had no accessible archive</li>
+      </ul>
+    </div>
+    <div class="block reveal">
+      <div class="block-title">What Was Needed</div>
+      <ul class="feat-list">
+        <li><span>Full transaction CRM</span> covering every property type and deal stage</li>
+        <li><span>Automated task generation</span> — one trigger creates the full closing checklist</li>
+        <li><span>Smart pipeline movement</span> — deals move boards when status changes</li>
+        <li><span>Commission columns</span> — sold price, listing price, comm%, gross, ends all tracked</li>
+        <li><span>Alert system</span> — 1-day deadline notifications for all outstanding tasks</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PIPELINE -->
+<section class="reveal">
+  <div class="sec-label">02 — Pipeline Structure</div>
+  <h2>Pre-Listing → Active → Closing → <em>Sold.</em></h2>
+  <p>Each annual board was structured with 4 clear pipeline stages. Every active deal lives in the right stage, and automations move them automatically as status changes — no manual dragging required.</p>
+  <div class="pipeline reveal">
+    <div class="pipe-stage">
+      <span class="ps-tag pre">Pre-Listing</span>
+      <div class="ps-title">Before It Goes Live</div>
+      <ul class="ps-items"><li>Staging prep</li><li>Document collection</li><li>Agent assigned</li><li>Listing price set</li></ul>
+    </div>
+    <div class="pipe-stage">
+      <span class="ps-tag active">Active Listings</span>
+      <div class="ps-title">On the Market</div>
+      <ul class="ps-items"><li>Live date tracked</li><li>PV count</li><li>Contract status: Listed</li><li>Process: Open</li></ul>
+    </div>
+    <div class="pipe-stage">
+      <span class="ps-tag closing">Closing</span>
+      <div class="ps-title">In Closing Process</div>
+      <ul class="ps-items"><li>Lawyer info logged</li><li>Subitems auto-created</li><li>Due date alerts active</li><li>Docs tracked</li></ul>
+    </div>
+    <div class="pipe-stage">
+      <span class="ps-tag sold">Closed / Sold</span>
+      <div class="ps-title">Deal Complete</div>
+      <ul class="ps-items"><li>Sold price recorded</li><li>Commission calculated</li><li># of Ends logged</li><li>Archived annually</li></ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- AUTOMATIONS -->
+<section class="reveal">
+  <div class="sec-label">03 — Automations Built</div>
+  <h2><em>25 automations</em> — zero manual pipeline movement.</h2>
+  <p>Every deal stage change, task deadline, and document requirement is handled automatically. Key automations built:</p>
+  <div class="auto-grid reveal">
+    <div class="auto-row"><span class="auto-icon">⚡</span><div class="auto-text"><strong>When Property Type → Freehold Closing:</strong> automatically creates 20+ closing subitems (lawyer submissions, sign-backs, deposit tracking, and more) — instantly, with one status change.</div></div>
+    <div class="auto-row"><span class="auto-icon">🔔</span><div class="auto-text"><strong>1 day before subitem Due Date,</strong> only if Status is not Done → <strong>notify subitem Owner</strong> — no missed deadlines.</div></div>
+    <div class="auto-row"><span class="auto-icon">📦</span><div class="auto-text"><strong>When Contract Status = Closed</strong> → automatically <strong>move item to the Closed board.</strong></div></div>
+    <div class="auto-row"><span class="auto-icon">🏠</span><div class="auto-text"><strong>When Contract Status = Sold</strong> → automatically <strong>move item to the Closing board</strong> for post-sale processing.</div></div>
+    <div class="auto-row"><span class="auto-icon">➕</span><div class="auto-text"><strong>+ 21 additional automations</strong> covering Condo Closing subitems, Lease Buyer tasks, board movement triggers, status cascades, and date-based notifications.</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- RESULTS -->
+<div class="results-bg">
+  <section class="reveal">
+    <div class="sec-label">04 — The Results</div>
+    <h2>A $27M+ pipeline, <em>fully organised.</em></h2>
+    <p>OG Properties now runs their entire transaction pipeline inside monday.com. Every deal is in the right stage, every closing checklist is generated automatically, and every agent gets notified before deadlines — without anyone manually managing the workflow. Three years of transaction data (2022–2024) are structured, searchable, and reportable.</p>
+    <div class="results-grid">
+      <div class="rstat reveal"><div class="rs-num">25</div><div class="rs-lbl">Automations Live</div><p class="rs-note">All active and running</p></div>
+      <div class="rstat reveal"><div class="rs-num">$27M+</div><div class="rs-lbl">Tracked in 1 Board</div><p class="rs-note">2023 transactions</p></div>
+      <div class="rstat reveal"><div class="rs-num">20+</div><div class="rs-lbl">Auto Tasks Created</div><p class="rs-note">Per Freehold closing</p></div>
+      <div class="rstat reveal"><div class="rs-num">4</div><div class="rs-lbl">Pipeline Stages</div><p class="rs-note">Pre-list to closed</p></div>
+      <div class="rstat reveal"><div class="rs-num">3yrs</div><div class="rs-lbl">Data Structured</div><p class="rs-note">2022–2024 archived</p></div>
+      <div class="rstat reveal"><div class="rs-num">0</div><div class="rs-lbl">Manual Pipeline Moves</div><p class="rs-note">All handled by automations</p></div>
+    </div>
+    <div class="quote-block reveal" style="margin-top:3rem">
+      <p class="quote-text">"Every transaction now moves through the system automatically — the right tasks appear, the right people get notified, and nothing gets missed."</p>
+      <div class="quote-attr">— OG Properties</div>
+    </div>
+  </section>
+</div>
+
+<div class="cta-section reveal">
+  <h2>Need a <em style="font-style:normal;color:var(--blue-lt)">real estate CRM</em> that actually works?</h2>
+  <p>I build monday.com systems with automations that eliminate manual work from your transaction pipeline.</p>
+  <a href="mailto:hello@youremail.com" class="btn">Work With Me</a>
+</div>
+
+<script>
+  const obs=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.08});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
