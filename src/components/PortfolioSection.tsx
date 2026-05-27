@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import ImageLightbox, { LightboxItem, LightboxSlide } from "./ImageLightbox";
@@ -91,13 +91,15 @@ const PortfolioSection = () => {
                 {loop.map((p, i) => (
                   <div
                     key={`${p.id}-${i}`}
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => setLightboxItem(buildLightboxItem(p))}
-                    onKeyDown={(e) => e.key === "Enter" && setLightboxItem(buildLightboxItem(p))}
                     className="group relative w-[220px] sm:w-[260px] md:w-[300px] flex-shrink-0 rounded-2xl overflow-hidden bg-card border border-border shadow-md hover:shadow-xl transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent/50"
                   >
-                    <div className="relative w-full aspect-[3/4] bg-muted overflow-hidden">
+                    <div 
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => setLightboxItem(buildLightboxItem(p))}
+                      onKeyDown={(e) => e.key === "Enter" && setLightboxItem(buildLightboxItem(p))}
+                      className="relative w-full aspect-[3/4] bg-muted overflow-hidden"
+                    >
                       {p.featured_image_url ? (
                         <img
                           src={p.featured_image_url}
@@ -127,6 +129,13 @@ const PortfolioSection = () => {
                         </h3>
                         {p.key_result && (
                           <p className="text-accent text-[11px] font-semibold line-clamp-1">{p.key_result}</p>
+                        )}
+                        {/* Render description HTML (for case study link) */}
+                        {p.description && (
+                          <div 
+                            className="text-background/80 text-[10px] mt-1.5"
+                            dangerouslySetInnerHTML={{ __html: p.description }}
+                          />
                         )}
                       </div>
                     </div>
