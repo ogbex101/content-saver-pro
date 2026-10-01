@@ -1,34 +1,18 @@
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { supabase } from "@/integrations/supabase/client";
-import { Pen, Mail, Settings, TrendingUp, Lightbulb, BarChart3, Target, Sparkles, ClipboardList, type LucideIcon } from "lucide-react";
+import { Pen } from "lucide-react";
+import type { Skill } from "@/lib/site-content";
+import { iconMap } from "@/lib/icons";
+import SectionHeading from "./SectionHeading";
 
-const iconMap: Record<string, LucideIcon> = { Pen, Mail, Settings, TrendingUp, Lightbulb, BarChart3, Target, Sparkles, ClipboardList };
-
-const SkillsSection = () => {
-  const [skills, setSkills] = useState<any[]>([]);
-
-  useEffect(() => {
-    supabase.from("skills").select("*").order("sort_order").then(({ data }) => setSkills(data ?? []));
-  }, []);
+/** Receives only the skills that are not already listed as services. */
+const SkillsSection = ({ skills }: { skills: Skill[] }) => {
+  if (skills.length === 0) return null;
 
   return (
     <section id="skills" className="py-24 md:py-32 bg-surface relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-px ink-divider" />
       <div className="container mx-auto px-5 md:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-14"
-        >
-          <span className="text-accent text-[11px] tracking-[0.35em] uppercase font-semibold">Expertise</span>
-          <h2 className="font-display text-4xl md:text-6xl font-light mt-4 mb-3">
-            My <span className="italic font-medium text-accent">skills</span>
-          </h2>
-          <div className="w-16 h-px bg-foreground/30 mx-auto" />
-        </motion.div>
+        <SectionHeading eyebrow="Expertise" title="My" accent="skills" />
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5 max-w-3xl mx-auto">
           {skills.map((s, i) => {

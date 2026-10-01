@@ -33,7 +33,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: { error: unknown; reset: () => void }) {
   console.error(error);
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -41,7 +41,9 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
           This page didn't load
         </h1>
-        <p className="mt-2 text-sm text-muted-foreground">{error.message}</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          {error instanceof Error ? error.message : "Something went wrong."}
+        </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => reset()}
@@ -66,16 +68,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Blessing — Brand & Digital Designer" },
-      { name: "description", content: "Portfolio of Blessing — brand identity, web design, and digital experiences that convert." },
-      { property: "og:title", content: "Blessing — Brand & Digital Designer" },
-      { property: "og:description", content: "Portfolio of Blessing — brand identity, web design, and digital experiences that convert." },
+      // Defaults only. The home page sets its own title, description and
+      // preview image from the profile in the admin dashboard.
+      { title: "Email Marketing & Virtual Assistant Portfolio" },
+      {
+        name: "description",
+        content:
+          "Email marketing, virtual assistance and CRM automation, with written case studies.",
+      },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: "https://content-saver-pro.lovable.app/og-image.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Blessing — Brand & Digital Designer" },
-      { name: "twitter:description", content: "Portfolio of Blessing — brand identity, web design, and digital experiences that convert." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/82dece78-9678-43ac-b769-255403de0ba7/id-preview-011ec961--30a7483e-470a-4678-a758-16a938236c8b.lovable.app-1779193743415.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/82dece78-9678-43ac-b769-255403de0ba7/id-preview-011ec961--30a7483e-470a-4678-a758-16a938236c8b.lovable.app-1779193743415.png" },
+      { name: "twitter:image", content: "https://content-saver-pro.lovable.app/og-image.jpg" },
     ],
     links: [{ rel: "stylesheet", href: appCss }],
   }),

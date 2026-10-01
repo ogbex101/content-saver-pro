@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
+import type { Project } from "@/lib/site-content";
 import ImageLightbox, { LightboxItem, LightboxSlide } from "./ImageLightbox";
+import SectionHeading from "./SectionHeading";
 
-const buildLightboxItem = (p: any): LightboxItem => {
+const buildLightboxItem = (p: Project): LightboxItem => {
   const slides: LightboxSlide[] = [];
 
   // Featured image first
@@ -18,7 +19,7 @@ const buildLightboxItem = (p: any): LightboxItem => {
   }
   // Gallery images
   if (Array.isArray(p.project_images)) {
-    p.project_images.forEach((img: any) => {
+    p.project_images.forEach((img) => {
       if (img.image_url && img.image_url !== p.featured_image_url) {
         slides.push({ image_url: img.image_url, caption: img.caption ?? undefined });
       }
@@ -36,19 +37,9 @@ const buildLightboxItem = (p: any): LightboxItem => {
   };
 };
 
-const PortfolioSection = () => {
-  const [projects, setProjects] = useState<any[]>([]);
+const PortfolioSection = ({ projects }: { projects: Project[] }) => {
   const [lightboxItem, setLightboxItem] = useState<LightboxItem | null>(null);
-
-  useEffect(() => {
-    supabase
-      .from("projects")
-      .select("*, project_results(*), project_images(*)")
-      .eq("featured_on_homepage", true)
-      .order("sort_order")
-      .limit(12)
-      .then(({ data }) => setProjects(data ?? []));
-  }, []);
+  if (projects.length === 0) return null;
 
   // Duplicate list for seamless infinite scroll
   const loop = projects.length > 0 ? [...projects, ...projects] : [];
@@ -57,22 +48,12 @@ const PortfolioSection = () => {
     <section id="portfolio" className="py-20 md:py-28 bg-background relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-px ink-divider" />
       <div className="container mx-auto px-5 md:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-10 md:mb-14"
-        >
-          <span className="text-accent text-[11px] tracking-[0.35em] uppercase font-semibold">My work</span>
-          <h2 className="font-display text-3xl md:text-5xl font-light mt-4 mb-3">
-            Featured <span className="italic font-medium text-accent">projects</span>
-          </h2>
-          <div className="w-16 h-px bg-foreground/30 mx-auto mb-4" />
-          <p className="text-muted-foreground text-sm md:text-base max-w-xl mx-auto">
-            Campaigns and designs that delivered real results.
-          </p>
-        </motion.div>
+        <SectionHeading
+          eyebrow="My work"
+          title="Featured"
+          accent="designs"
+          intro="Email designs and campaign pieces. Tap any of them to see it full size."
+        />
 
         {projects.length > 0 && (
           <>
@@ -80,8 +61,10 @@ const PortfolioSection = () => {
             <div
               className="relative w-full overflow-hidden"
               style={{
-                maskImage: "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
-                WebkitMaskImage: "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
+                maskImage:
+                  "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
+                WebkitMaskImage:
+                  "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
               }}
             >
               <div
@@ -91,9 +74,10 @@ const PortfolioSection = () => {
                 {loop.map((p, i) => (
                   <div
                     key={`${p.id}-${i}`}
+                    aria-hidden={i >= projects.length || undefined}
                     className="group relative w-[220px] sm:w-[260px] md:w-[300px] flex-shrink-0 rounded-2xl overflow-hidden bg-card border border-border shadow-md hover:shadow-xl transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent/50"
                   >
-                    <div 
+                    <div
                       role="button"
                       tabIndex={0}
                       onClick={() => setLightboxItem(buildLightboxItem(p))}
@@ -128,11 +112,13 @@ const PortfolioSection = () => {
                           {p.title}
                         </h3>
                         {p.key_result && (
-                          <p className="text-accent text-[11px] font-semibold line-clamp-1">{p.key_result}</p>
+                          <p className="text-accent text-[11px] font-semibold line-clamp-1">
+                            {p.key_result}
+                          </p>
                         )}
                         {/* Render description HTML (for case study link) */}
                         {p.description && (
-                          <div 
+                          <div
                             className="text-background/80 text-[10px] mt-1.5"
                             dangerouslySetInnerHTML={{ __html: p.description }}
                           />
@@ -155,7 +141,7 @@ const PortfolioSection = () => {
                 to="/portfolio"
                 className="inline-flex items-center gap-2 border border-foreground/20 text-foreground px-7 py-3 rounded-full text-sm font-semibold tracking-wide hover:border-accent hover:text-accent transition-all duration-300"
               >
-                View all designs <ArrowRight size={15} />
+                View all work <ArrowRight size={15} />
               </Link>
             </motion.div>
           </>

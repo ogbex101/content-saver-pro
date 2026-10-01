@@ -1,35 +1,22 @@
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { supabase } from "@/integrations/supabase/client";
-import { Pen, Mail, Settings, Target, ClipboardList, Sparkles, TrendingUp, Lightbulb, BarChart3, type LucideIcon } from "lucide-react";
+import { Pen } from "lucide-react";
+import { iconMap } from "@/lib/icons";
+import type { Service } from "@/lib/site-content";
+import SectionHeading from "./SectionHeading";
 
-const iconMap: Record<string, LucideIcon> = { Pen, Mail, Settings, Target, ClipboardList, Sparkles, TrendingUp, Lightbulb, BarChart3 };
-
-const ServicesSection = () => {
-  const [services, setServices] = useState<any[]>([]);
-
-  useEffect(() => {
-    supabase.from("services").select("*").order("sort_order").then(({ data }) => setServices(data ?? []));
-  }, []);
+const ServicesSection = ({ services }: { services: Service[] }) => {
+  if (services.length === 0) return null;
 
   return (
     <section id="services" className="py-24 md:py-32 bg-background relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-px ink-divider" />
       <div className="container mx-auto px-5 md:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-14"
-        >
-          <span className="text-accent text-[11px] tracking-[0.35em] uppercase font-semibold">What I do</span>
-          <h2 className="font-display text-4xl md:text-6xl font-light mt-4 mb-3">
-            My <span className="italic font-medium text-accent">services</span>
-          </h2>
-          <div className="w-16 h-px bg-foreground/30 mx-auto mb-4" />
-          <p className="text-muted-foreground max-w-xl mx-auto">A short list of how I can help your team move faster.</p>
-        </motion.div>
+        <SectionHeading
+          eyebrow="What I do"
+          title="How I can"
+          accent="help"
+          intro="Hand over one of these, or the whole lot."
+        />
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 max-w-6xl mx-auto">
           {services.map((s, i) => {

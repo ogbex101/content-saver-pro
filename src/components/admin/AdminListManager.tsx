@@ -54,7 +54,7 @@ const AdminListManager = ({ table, label }: Props) => {
         <div className="mb-4 p-4 rounded-lg border bg-surface space-y-3">
           <input placeholder="Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full px-3 py-2 rounded-lg border bg-card text-sm focus:outline-none focus:ring-2 focus:ring-gold/50" />
           <textarea placeholder="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={2} className="w-full px-3 py-2 rounded-lg border bg-card text-sm resize-none focus:outline-none focus:ring-2 focus:ring-gold/50" />
-          <input placeholder="Icon name (e.g. Pen, Mail, Settings)" value={form.icon} onChange={(e) => setForm({ ...form, icon: e.target.value })} className="w-full px-3 py-2 rounded-lg border bg-card text-sm focus:outline-none focus:ring-2 focus:ring-gold/50" />
+          <input placeholder="Icon: Pen, Mail, Megaphone, CalendarDays, Users, Settings, ClipboardList, Sparkles, Lightbulb, TrendingUp, BarChart3, Target" value={form.icon} onChange={(e) => setForm({ ...form, icon: e.target.value })} className="w-full px-3 py-2 rounded-lg border bg-card text-sm focus:outline-none focus:ring-2 focus:ring-gold/50" />
           <div className="flex gap-2">
             <button onClick={saveNew} className="flex items-center gap-1 bg-gold hover:bg-gold-dark text-primary-foreground px-3 py-1.5 rounded-lg text-sm"><Check size={14} /> Save</button>
             <button onClick={() => setAdding(false)} className="flex items-center gap-1 border px-3 py-1.5 rounded-lg text-sm"><X size={14} /> Cancel</button>

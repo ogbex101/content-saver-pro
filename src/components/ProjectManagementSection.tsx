@@ -1,19 +1,9 @@
-import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Zap, LayoutDashboard, ArrowRight } from "lucide-react";
+import type { Automation } from "@/lib/site-content";
 import ImageLightbox, { LightboxItem } from "./ImageLightbox";
-
-interface Automation {
-  id: string;
-  title: string;
-  description: string | null;
-  tool: string | null;
-  image_url: string | null;
-  link_url: string | null;
-  sort_order: number;
-  category: string;
-}
+import SectionHeading from "./SectionHeading";
 
 const buildLightboxItem = (a: Automation): LightboxItem => ({
   title: a.title,
@@ -29,7 +19,7 @@ const Card = ({ item, onClick }: { item: Automation; onClick: () => void }) => (
     tabIndex={0}
     onClick={onClick}
     onKeyDown={(e) => e.key === "Enter" && onClick()}
-    className="group w-[260px] sm:w-[300px] md:w-[340px] flex-shrink-0 bg-card border border-border/60 rounded-2xl overflow-hidden hover:border-gold/50 hover:shadow-xl hover:shadow-gold/10 transition-all duration-500 cursor-pointer focus:outline-none focus:ring-2 focus:ring-gold/50"
+    className="group w-[260px] sm:w-[300px] md:w-[340px] flex-shrink-0 bg-card border border-border/60 rounded-2xl overflow-hidden hover:border-accent/50 hover:shadow-xl transition-all duration-500 cursor-pointer focus:outline-none focus:ring-2 focus:ring-accent/50"
   >
     {item.image_url && (
       <div className="aspect-[16/10] overflow-hidden bg-muted relative">
@@ -49,9 +39,11 @@ const Card = ({ item, onClick }: { item: Automation; onClick: () => void }) => (
     )}
     <div className="p-4">
       {item.tool && (
-        <span className="text-[10px] font-bold uppercase tracking-wider text-gold">{item.tool}</span>
+        <span className="text-[10px] font-bold uppercase tracking-wider text-accent">
+          {item.tool}
+        </span>
       )}
-      <h3 className="font-bold text-sm md:text-base mt-1 mb-1.5 line-clamp-1 group-hover:text-gold transition-colors">
+      <h3 className="font-bold text-sm md:text-base mt-1 mb-1.5 line-clamp-1 group-hover:text-accent transition-colors">
         {item.title}
       </h3>
       {item.description && (
@@ -60,7 +52,7 @@ const Card = ({ item, onClick }: { item: Automation; onClick: () => void }) => (
         </p>
       )}
       {item.link_url && (
-        <span className="mt-3 inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-gold">
+        <span className="mt-3 inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-accent">
           See it in action <ArrowRight size={11} />
         </span>
       )}
@@ -91,7 +83,9 @@ const Track = ({
         style={{ animationDuration: `${Math.max(24, items.length * 6)}s` }}
       >
         {loop.map((a, i) => (
-          <Card key={`${a.id}-${i}`} item={a} onClick={() => onCardClick(a)} />
+          <div key={`${a.id}-${i}`} aria-hidden={i >= items.length || undefined}>
+            <Card item={a} onClick={() => onCardClick(a)} />
+          </div>
         ))}
       </div>
     </div>
@@ -119,8 +113,8 @@ const SubSection = ({ title, subtitle, icon, items, reverse, onCardClick }: SubS
     >
       <div className="container mx-auto px-5 md:px-8 mb-6">
         <div className="flex items-center gap-3 mb-1">
-          <span className="w-1.5 h-6 bg-gold rounded-full flex-shrink-0" />
-          <h3 className="text-lg md:text-2xl font-bold flex items-center gap-2">
+          <span className="w-1.5 h-6 bg-accent rounded-full flex-shrink-0" />
+          <h3 className="font-display text-lg md:text-2xl font-semibold flex items-center gap-2">
             {icon}
             {title}
           </h3>
@@ -132,26 +126,13 @@ const SubSection = ({ title, subtitle, icon, items, reverse, onCardClick }: SubS
   );
 };
 
-const ProjectManagementSection = () => {
-  const [items, setItems] = useState<Automation[]>([]);
-  const [loaded, setLoaded] = useState(false);
+const ProjectManagementSection = ({ automations: items }: { automations: Automation[] }) => {
   const [lightboxItem, setLightboxItem] = useState<LightboxItem | null>(null);
-
-  useEffect(() => {
-    supabase
-      .from("automations")
-      .select("*")
-      .order("sort_order")
-      .then(({ data }) => {
-        setItems((data as Automation[]) ?? []);
-        setLoaded(true);
-      });
-  }, []);
 
   const pm = items.filter((i) => i.category !== "n8n");
   const n8n = items.filter((i) => i.category === "n8n");
 
-  if (!loaded || items.length === 0) return null;
+  if (items.length === 0) return null;
 
   const handleCardClick = (a: Automation) => setLightboxItem(buildLightboxItem(a));
 
@@ -159,31 +140,24 @@ const ProjectManagementSection = () => {
     <>
       {/* ── Project Management & Automation ── */}
       {pm.length > 0 && (
-        <section id="project-management" className="py-20 md:py-28 bg-surface relative overflow-hidden">
+        <section
+          id="project-management"
+          className="py-20 md:py-28 bg-surface relative overflow-hidden"
+        >
           <div className="absolute inset-0 gradient-radial opacity-60 pointer-events-none" />
           <div className="relative">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-12 md:mb-16 container mx-auto px-5 md:px-8"
-            >
-              <span className="text-gold text-xs tracking-[0.3em] uppercase font-bold inline-flex items-center gap-2">
-                <LayoutDashboard size={12} /> Project Systems
-              </span>
-              <h2 className="text-2xl md:text-4xl font-black mt-3 mb-4">
-                Project Management &amp; Automation
-              </h2>
-              <div className="w-20 h-1 gradient-gold mx-auto rounded-full mb-4" />
-              <p className="text-muted-foreground text-sm md:text-base max-w-2xl mx-auto font-semibold">
-                Structured systems that keep projects on track, on time, and on budget.
-              </p>
-            </motion.div>
+            <div className="container mx-auto px-5 md:px-8">
+              <SectionHeading
+                eyebrow="Project systems"
+                title="Project management"
+                accent="& automation"
+                intro="Trackers, boards and workflows that keep deliverables on time without anyone chasing."
+              />
+            </div>
             <SubSection
               title="Project Management"
               subtitle="Frameworks, trackers, and workflows built to manage complex deliverables."
-              icon={<LayoutDashboard size={18} className="text-gold" />}
+              icon={<LayoutDashboard size={18} className="text-accent" />}
               items={pm}
               onCardClick={handleCardClick}
             />
@@ -193,31 +167,24 @@ const ProjectManagementSection = () => {
 
       {/* ── n8n Automation ── */}
       {n8n.length > 0 && (
-        <section id="n8n-automation" className="py-20 md:py-28 bg-background relative overflow-hidden">
+        <section
+          id="n8n-automation"
+          className="py-20 md:py-28 bg-background relative overflow-hidden"
+        >
           <div className="absolute top-0 left-0 right-0 h-px ink-divider" />
           <div className="relative">
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-12 md:mb-16 container mx-auto px-5 md:px-8"
-            >
-              <span className="text-gold text-xs tracking-[0.3em] uppercase font-bold inline-flex items-center gap-2">
-                <Zap size={12} /> Workflow Automation
-              </span>
-              <h2 className="text-2xl md:text-4xl font-black mt-3 mb-4">
-                n8n Automation
-              </h2>
-              <div className="w-20 h-1 gradient-gold mx-auto rounded-full mb-4" />
-              <p className="text-muted-foreground text-sm md:text-base max-w-2xl mx-auto font-semibold">
-                Smart n8n workflows that eliminate repetitive work and connect your tools seamlessly.
-              </p>
-            </motion.div>
+            <div className="container mx-auto px-5 md:px-8">
+              <SectionHeading
+                eyebrow="Workflow automation"
+                title="n8n"
+                accent="automation"
+                intro="Workflows that move data, send the follow-ups and connect your tools, so repetitive work runs itself."
+              />
+            </div>
             <SubSection
               title="n8n Workflows"
               subtitle="Automated pipelines built with n8n to handle data, notifications, and integrations."
-              icon={<Zap size={18} className="text-gold" />}
+              icon={<Zap size={18} className="text-accent" />}
               items={n8n}
               reverse
               onCardClick={handleCardClick}
